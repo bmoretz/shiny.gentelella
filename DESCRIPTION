@@ -2,11 +2,12 @@ Package: shiny.gentelella
 Title: A Shiny Theme based upon Gentelella Bootstrap Template.
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Brandon", 
-    											family = "Moretz",
-    											role = c("aut", "cre"),
-    											email = "bmoretz@ionicsolutions.net"),
-                          comment = c(ORCID = "0000-0001-8832-5173")),
+    person(
+      given = "Brandon", 
+    	family = "Moretz",
+    	role = c("aut", "cre"),
+    	email = "bmoretz@ionicsolutions.net"),
+      comment = c(ORCID = "0000-0001-8832-5173")),
     person(
       family = "colorlib", 
       role = c("ctb", "cph"),
@@ -20,12 +21,19 @@ LazyData: true
 Depends:
   R (>= 3.5.3)
 Imports:
+    config (>= 0.3.1),
+    R6 (>= 2.5.1),
     shiny (>= 1.7.1),
     shinyWidgets (>= 0.6.2)
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/bmoretz/shiny-gentelella
+BugReports: https://github.com/bmoretz/shiny-gentelella/issues
 RoxygenNote: 7.0.0
 Suggests: 
     rmarkdown,
     knitr,
-    covr
+    covr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
 VignetteBuilder: knitr
