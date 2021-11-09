@@ -1,0 +1,16 @@
+menu:
+  - title: General
+    dropdown:
+      - text: Home
+        class: fa-home
+        items:
+          - text: Dashboard
+            url: index.html
+          - text: Dashboard2
+            url: index2.html
+          - text: Dashboard3
+            url: index3.html
+  - title: Landing Page
+    static:
+      - text: Coming Soon
+      - url: javascript:void(0)

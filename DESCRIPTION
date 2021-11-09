@@ -2,28 +2,29 @@ Package: shiny.gentelella
 Title: A Shiny Theme based upon Gentelella Bootstrap Template.
 Version: 0.0.0.9000
 Authors@R: 
-    person(
-      given = "Brandon", 
-    	family = "Moretz",
-    	role = c("aut", "cre"),
-    	email = "bmoretz@ionicsolutions.net"),
-      comment = c(ORCID = "0000-0001-8832-5173")),
+    c(person(given = "Brandon",
+       family = "Moretz",
+       role = c("aut", "cre"),
+       email = "bmoretz@ionicsolutions.net",
+       comment = c(ORCID = "0000-0001-8832-5173")
+    ),
     person(
       family = "colorlib", 
       role = c("ctb", "cph"),
-      comment = "https://github.com/puikinsh/gentelella"
-    )                          
+      comment = "https://github.com/puikinsh/gentelella")
+    )
 Description: A shiny dashboard based upon the Bootstrap 4 'Gentelella' theme.
-Maintainer: The package maintainer: bmoretz@ionicsolutions.net
+Maintainer: Brandon Moretz <bmoretz@ionicsolutions.net>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-  R (>= 3.5.3)
+    R (>= 3.5.3)
 Imports:
     config (>= 0.3.1),
     R6 (>= 2.5.1),
     shiny (>= 1.7.1),
+    yaml (>= 2.2.1),
     shinyWidgets (>= 0.6.2)
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/bmoretz/shiny-gentelella
