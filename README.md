@@ -6,49 +6,76 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/bmoretz/shiny.gentelella/workflows/R-CMD-check/badge.svg)](https://github.com/bmoretz/shiny.gentelella/actions)
+
 <!-- badges: end -->
 
-The goal of shiny.gentelella is to …
+The goal of shiny.gentelella is to provide a simple, object-oriented
+application framework styled using the open-source bootstrap4 theme,
+<a href="https://github.com/ColorlibHQ/gentelella">gentelella</a>.
 
 ## Installation
 
 You can install the development version of shiny.gentelella like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+remotes::install_github("bmoretz/shiny.gentelella")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a simple example that shows you how to setup a single page
+dashboard:
 
 ``` r
 library(shiny.gentelella)
+#> Loading required package: shiny
+
+ExampleDashboard <- R6::R6Class(
+  classname = "ExampleDashboard",
+  inherit = Dashboard,
+  public = list(
+
+    #' @field meta page attributes
+    #' and configuration wrapper.
+    meta = list(
+      title = "Example Dashbaord",
+      nav_definition = system.file("example",
+                                   "navigation.yml",
+                                   package = "shiny.gentelella")
+    ),
+
+    #' @description
+    #' Create a new UI Page object.
+    #' @return A new `ExampleDashboard` object.
+    initialize = function() {
+      super$initialize()
+    },
+
+    #' @description user-interface wrapper.
+    ui = function() {
+      self$layout()
+    },
+
+    #' @description server-side wrapper.
+    #' @param input form input
+    #' @param output render output
+    #' @param session page session
+    server = function(input, output, session) {
+
+      private$set_logging()
+      logger::log_trace("processing server events")
+    }
+  ),
+  private = list()
+)
+
+example <- ExampleDashboard$new()
+
+# Run the application
+app <- shinyApp(ui = example$ui(),
+                server = example$server)
+
+# runApp(app, port = 8080)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+![alt text here](inst/resources/screenshot.jfif)

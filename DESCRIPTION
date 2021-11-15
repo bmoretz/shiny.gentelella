@@ -19,20 +19,21 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>= 3.5.3)
+    R (>= 4.0),
+    shiny (>= 1.7.1),
 Imports:
     config (>= 0.3.1),
     glue (>= 1.4.2),
-    logger (>= 0.2.2),
+    logger (>= 0.2.1),
     R6 (>= 2.5.1),
-    shiny (>= 1.7.1),
     uuid,
-    shinyWidgets (>= 0.6.2),
-    yaml (>= 2.2.1)
+    yaml (>= 2.2.1),
+    crayon (>= 1.4.1),
+    stringr (>= 1.4.0)
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/bmoretz/shiny-gentelella
 BugReports: https://github.com/bmoretz/shiny-gentelella/issues
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.2
 Suggests: 
     rmarkdown,
     knitr,
@@ -41,3 +42,13 @@ Suggests:
 Config/testthat/edition: 3
 Language: en-US
 VignetteBuilder: knitr
+Collate: 
+    'element.R'
+    'control.R'
+    'dashboard.R'
+    'log-config.R'
+    'navigation-menu.R'
+    'page.R'
+    'resource-mgr.R'
+    'utility.R'
+    'zzz.R'

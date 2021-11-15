@@ -1,9 +1,13 @@
+#' @import shiny
+NULL
+
 #' Package initialization routine.
 #'
 #'
 #'
-#' @param libname parent
-#' @param pkgname
+#' @param libname library name
+#' @param pkgname package name
+#' @importFrom config get
 .onLoad = function (libname, pkgname) {
 
   logger::log_formatter(logger::formatter_glue)

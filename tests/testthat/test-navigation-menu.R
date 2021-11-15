@@ -3,32 +3,120 @@ NavigationMenuTester <- R6::R6Class(
   inherit = NavigationMenu,
 
   public = list(
+
     initialize = function(nav_definition) {
       super$initialize(nav_definition)
     },
 
-    test_parse_menu = function() {
-      private$parse_navigation()
+    test_parse_navigation = function(nav_file) {
+      private$parse_navigation(nav_file)
+    },
+
+    test_create_container = function(menu) {
+      private$create_container(menu)
+    },
+
+    test_create_menu_sections = function(menu) {
+      private$create_menu_sections(menu)
+    },
+
+    test_construct = function() {
+      private$construct()
+    },
+
+    get_html = function() {
+      private$html
+    },
+
+    get_definition = function() {
+      private$nav_definition
+    },
+
+    set_logging = function() {
+      private$set_logging()
     }
   ),
 
   private = list()
 )
 
-mock_menu_definition <- system.file("test-data",
-                                    "mock-nav-menu.yml",
-                                    package = "shiny.gentelella")
+nav_definition <- system.file("test-data",
+                              "mock-nav-menu.yml",
+                              package = "shiny.gentelella")
 
-mock_menu <- NavigationMenuTester$new(mock_menu_definition)
+test_that("menu_file_parses", {
 
-test_that("menu_file_loads", {
-  actual <- mock_menu$test_parse_menu()
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+  mock_menu$set_logging()
 
-  expect_gt(length(actual), 0)
+  nav_file <- mock_menu$get_definition()
+  expect_true(file.exists(nav_file))
+
+  navigation <- mock_menu$test_parse_navigation(nav_file)
+
+  expect_equal(class(navigation), 'list')
+  expect_equal(length(navigation), 2)
+
+  # menu sections
+  general <- navigation[[1]]
+
+  expect_equal(general$title, "General")
+
+  # home drop-down
+  home <- general$dropdown[[1]]
+
+  expect_equal(length(home), 3)
+
+  expect_equal(home$text, "Home")
+  expect_equal(home$class, "fa-home")
+
+  # home menu items
+  home_menu_items <- home$items
+
+  expect_equal(home_menu_items[[1]]$text, "Dashboard")
+  expect_equal(home_menu_items[[1]]$url, "index.html")
+
+  expect_equal(home_menu_items[[2]]$text, "Dashboard2")
+  expect_equal(home_menu_items[[2]]$url, "index2.html")
+
+  expect_equal(home_menu_items[[3]]$text, "Dashboard3")
+  expect_equal(home_menu_items[[3]]$url, "index3.html")
+
+  live_on <- navigation[[2]]
+
+  expect_equal(live_on$title, "LIVE ON")
+
+  landing_page <- live_on$static[[1]]
+
+  expect_equal(landing_page$text, "Landing Page")
+  expect_equal(landing_page$class, "fa-laptop")
+
+  comming_soon <- landing_page$item[[1]]
+
+  expect_equal(comming_soon$text, "Coming Soon")
+  expect_equal(comming_soon$url, "javascript:void(0)")
 })
 
-test_that("top_level_parses", {
-  actual <- mock_menu$test_parse_menu()
+test_that("menu_generates", {
 
-  expect_equal(length(actual), 1)
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+  mock_menu$set_logging()
+
+  parsed <- mock_menu$test_parse_navigation(nav_definition)
+
+  html <- mock_menu$test_create_container(parsed)
+
+  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1704))
+})
+
+test_that("menu_constructs", {
+
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+  mock_menu$set_logging()
+
+  mock_menu$test_construct()
+
+  html <- mock_menu$get_html()
+
+  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1704))
 })

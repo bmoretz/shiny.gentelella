@@ -12,5 +12,8 @@ menu:
             url: index3.html
   - title: LIVE ON
     static:
-      - text: Coming Soon
-      - url: javascript:void(0)
+      - text: Landing Page
+        class: fa-laptop
+        item:
+          - text: Coming Soon
+            url: javascript:void(0)

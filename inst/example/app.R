@@ -1,11 +1,15 @@
-library(shiny)
+library(shiny.gentelella)
 
-devtools::load_all()
+source(here::here("inst", "example", "example-dashboard.R"))
 
-# Run the application 
-# shinyApp(ui = ui, server = server)
+example <- ExampleDashboard$new()
 
-nav <- NavigationMenu$new("navigation.yml")
+resource_mgr$map_path("assets", "theme/assets")
+resource_mgr$map_path("scripts", "theme/scripts")
+resource_mgr$map_path("images", "theme/images")
 
-html <- nav$construct()
-html
+# Run the application
+app <- shinyApp(ui = example$ui(),
+                server = example$server)
+
+runApp(app, port = 8080)

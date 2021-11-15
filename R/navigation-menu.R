@@ -1,6 +1,9 @@
 #' Generates a dashboard navigation menu from a yaml
 #' definition file.
 #' @export
+#' @importFrom glue glue
+#' @importFrom yaml read_yaml
+#' @importFrom logger log_trace log_info log_debug log_warn log_error log_success
 NavigationMenu <- R6::R6Class(
   classname = "NavigationMenu",
   inherit = Control,
@@ -10,26 +13,26 @@ NavigationMenu <- R6::R6Class(
     #' Create a navigation menu based
     #' on the structure of the yml
     #' definition file.
-    #' @param nav_definition the yml file that specifies how the
-    #' navigation menu should be laid out.
+    #' @param nav_definition menu navigation file (yml)
     #' @return A new `NavigationMenu` object.
     initialize = function(nav_definition) {
       super$initialize()
-
       private$nav_definition <- nav_definition
     },
 
-    construct = function() {
+    #' @description
+    #' Constructs the navigation menu UI
+    #' from yml definition.
+    ui = function() {
 
-      logger::log_layout(self$log_layout(), namespace = namespace)
-      logger::log_trace("creating navigation menu")
+      private$set_logging()
 
-      menu <- private$parse_navigation()
+      if(!private$constructed) {
+        private$construct()
+      }
 
-      return(menu)
-    },
-
-    ui = function() {}
+      private$html
+    }
   ),
 
   private = list(
@@ -37,19 +40,43 @@ NavigationMenu <- R6::R6Class(
     menu_types = c("dropdown",
                   "static"),
 
+    html = NULL,
     nav_definition = NULL,
+    constructed = F,
 
-    parse_navigation = function() {
+    construct = function() {
+
+      logger::log_trace("creating navigation menu: {private$nav_definition}")
+      # parse the menu definition from yml
+      navigation <- private$parse_navigation(private$nav_definition)
+
+      # convert from object representation to html
+      private$html <- private$create_container(navigation)
+      private$constructed <- T
+
+      invisible(self)
+    },
+
+    parse_navigation = function(nav_file) {
       tryCatch(
         expr = {
 
-          logger::log_trace("parsing navigation definition: '{private$nav_definition}'")
-          navigation <- yaml::read_yaml(private$nav_definition)
+          if(!file.exists(nav_file))
+            stop(glue::glue("unable to locate menu definition file: {nav_file}"))
 
-          private$create_container(navigation$menu)
+          logger::log_trace("parsing navigation definition: '{nav_file}'")
+          structure <- yaml::read_yaml(nav_file)
+          logger::log_success("parsed menu navigation file")
+          invisible(structure$menu)
         },
-        error = function(e) {
-
+        error = function(c) {
+          logger::log_debug(c)
+        },
+        warning = function(c) {
+          logger::log_warn(c)
+        },
+        message = function(c) {
+          logger::log_info(c)
         }
       )
     },
@@ -96,8 +123,6 @@ NavigationMenu <- R6::R6Class(
         sections <- c(sections, section)
       }
 
-      print(sections)
-
       sections
     },
 
@@ -117,10 +142,8 @@ NavigationMenu <- R6::R6Class(
            private$handle_dropdown(menu_item)
          },
          'static' = {
-           private$hanle_static(menu_item)
+           private$handle_static(menu_item)
          })
-
-      print(menu)
 
       menu
     },
@@ -163,12 +186,14 @@ NavigationMenu <- R6::R6Class(
 
         logger::log_trace("creating drop-down item: {child_item$text}")
 
-        items <- c(items,
-                   withTags(
-                     li(
-                       a(href=child_item$url,
-                         child_item$text))
-                   ))
+        item <- withTags(
+          li(class="sub_menu",
+            a(href=child_item$url,
+                child_item$text)
+          )
+        )
+
+        items <- c(items, item)
       }
 
       items
@@ -176,14 +201,24 @@ NavigationMenu <- R6::R6Class(
 
     handle_static = function(menu_item) {
 
-      logger::log_trace("creating static menu: {submenu$text}")
+      static_item <- menu_item$static[[1]]
+
+      logger::log_trace("creating static menu: {static_item$text}")
+
+      submenu_item <- static_item$item[[1]]
 
       withTags(
-        li(
-          a(href=menu_item$href,
-            menu_item$url)
+        li(class="sub_menu",
+            a(href=submenu_item$url,
+              tagList(
+                i(class=paste("fa", static_item$class)),
+                static_item$text,
+                span(class="label label-success pull-right",
+                     submenu_item$text)
+              )
+            )
+          )
         )
-      )
     }
   )
 )
