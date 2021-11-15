@@ -39,7 +39,7 @@ for(index in seq_along(navigation$menu)) {
   ui <- create_navigation_menu(menu_item)
 }
 
-menu_item <- menu[[1]]
+menu_item <- menu[[2]]
 
 for(idx in seq_along(menu_item$dropdown)) {
   
@@ -51,17 +51,3 @@ for(idx in seq_along(submenu$items)) {
   child_menu <- submenu$items[[idx]]
   print(child_menu)
 }
-
-
-c(
-  person(given = "Brandon",
-         family = "Moretz",
-         role = c("aut", "cre"),
-         email = "bmoretz@ionicsolutions.net",
-         comment = c(ORCID = "0000-0001-8832-5173")
-  ),
-  person(
-    family = "colorlib", 
-    role = c("ctb", "cph"),
-    comment = "https://github.com/puikinsh/gentelella")
-)

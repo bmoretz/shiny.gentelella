@@ -1,0 +1,11 @@
+default:
+  trials: 5
+  dataset: "data-sampled.csv"
+  logging:
+    threshold: !expr logger::TRACE
+
+production:
+  trials: 30
+  dataset: "data.csv"
+  logging:
+    threshold: !expr logger::TRACE

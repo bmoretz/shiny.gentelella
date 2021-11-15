@@ -23,9 +23,7 @@ You can install the development version of shiny.gentelella like so:
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-devtools::load_all()
-#> ℹ Loading shiny.gentelella
-## basic example code
+library(shiny.gentelella)
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`?

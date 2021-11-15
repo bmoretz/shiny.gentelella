@@ -15,5 +15,5 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-devtools::load_all()
+library(shiny.gentelella)
 ```

@@ -2,7 +2,7 @@
 #' all portal pages.
 #' @export
 Dashboard <- R6::R6Class(
-  inherit = UIElement,
+  inherit = Element,
   public = list(
 
     #' @description Initialize a portal page.

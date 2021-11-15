@@ -1,5 +1,5 @@
 Package: shiny.gentelella
-Title: A Shiny Theme based upon Gentelella Bootstrap Template.
+Title: A Shiny Theme based upon Gentelella Bootstrap Template
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Brandon",
@@ -22,10 +22,13 @@ Depends:
     R (>= 3.5.3)
 Imports:
     config (>= 0.3.1),
+    glue (>= 1.4.2),
+    logger (>= 0.2.2),
     R6 (>= 2.5.1),
     shiny (>= 1.7.1),
-    yaml (>= 2.2.1),
-    shinyWidgets (>= 0.6.2)
+    uuid,
+    shinyWidgets (>= 0.6.2),
+    yaml (>= 2.2.1)
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/bmoretz/shiny-gentelella
 BugReports: https://github.com/bmoretz/shiny-gentelella/issues
