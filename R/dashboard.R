@@ -1,6 +1,18 @@
-#' An object that is meant to be the base type for
-#' all portal pages.
+#' @title Dashboard
+#'
+#' @include page.R
+#'
+#' R6 Class representing a Dashboard layout.
+#'
+#' @description
+#' An object that is meant to represent a standardized
+#' dashboard page layout with [NavigationMenu], Settings,
+#' Summary and a customizable container for the main
+#' content section.
+#'
+#' @references \code{\link{Page}}
 #' @export
+#' @importFrom shiny htmlTemplate tagList
 Dashboard <- R6::R6Class(
   inherit = Page,
   public = list(

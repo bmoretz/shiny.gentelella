@@ -2,7 +2,9 @@
 % Please edit documentation in R/zzz.R
 \name{.onLoad}
 \alias{.onLoad}
-\title{Package initialization routine.}
+\title{Initialization
+
+Package initialization routine.}
 \usage{
 .onLoad(libname, pkgname)
 }
@@ -12,5 +14,7 @@
 \item{pkgname}{package name}
 }
 \description{
+Initialization
+
 Package initialization routine.
 }

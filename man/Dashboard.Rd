@@ -2,14 +2,15 @@
 % Please edit documentation in R/dashboard.R
 \name{Dashboard}
 \alias{Dashboard}
-\title{An object that is meant to be the base type for
-all portal pages.}
+\title{Dashboard}
 \description{
-An object that is meant to be the base type for
-all portal pages.
-
-An object that is meant to be the base type for
-all portal pages.
+An object that is meant to represent a standardized
+dashboard page layout with \link{NavigationMenu}, Settings,
+Summary and a customizable container for the main
+content section.
+}
+\references{
+\code{\link{Page}}
 }
 \section{Super classes}{
 \code{\link[shiny.gentelella:NA]{shiny.gentelella::NA}} -> \code{\link[shiny.gentelella:Page]{shiny.gentelella::Page}}

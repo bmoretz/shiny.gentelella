@@ -1,0 +1,9 @@
+*.html linguist-detectable=true
+*.htm inguist-detectable=true
+
+*.html    linguist-generated=true
+*.htm     linguist-generated=true
+*.rmd     linguist-generated=true
+
+*.rmd linguist-language=R
+*.Rmd linguist-language=R

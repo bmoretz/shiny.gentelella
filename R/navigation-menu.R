@@ -4,6 +4,8 @@
 #' @importFrom glue glue
 #' @importFrom yaml read_yaml
 #' @importFrom logger log_trace log_info log_debug log_warn log_error log_success
+#' @importFrom shiny NS tags tagList withTags
+#' @importFrom shiny div span h3 a
 NavigationMenu <- R6::R6Class(
   classname = "NavigationMenu",
   inherit = Control,
@@ -70,7 +72,7 @@ NavigationMenu <- R6::R6Class(
           invisible(structure$menu)
         },
         error = function(c) {
-          logger::log_debug(c)
+          logger::log_error(c)
         },
         warning = function(c) {
           logger::log_warn(c)
@@ -85,7 +87,7 @@ NavigationMenu <- R6::R6Class(
 
       logger::log_trace("creating menu container")
 
-      ns <- NS(private$id)
+      ns <- shiny::NS(private$id)
 
       div(
         id=ns("sidebar-menu"),

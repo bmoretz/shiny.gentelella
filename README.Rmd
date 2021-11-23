@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/bmoretz/shiny.gentelella/workflows/R-CMD-check/badge.svg)](https://github.com/bmoretz/shiny.gentelella/actions)
-
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![codecov](https://codecov.io/gh/bmoretz/shiny.gentelella/branch/master/graph/badge.svg?token=U3G6QWCNOI)](https://codecov.io/gh/bmoretz/shiny.gentelella)
 <!-- badges: end -->
 
 The goal of shiny.gentelella is to provide a simple, object-oriented application framework styled using the open-source bootstrap4 theme, <a href="https://github.com/ColorlibHQ/gentelella">gentelella</a>.

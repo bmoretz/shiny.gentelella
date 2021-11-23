@@ -6,3 +6,8 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^codecov\.yml$
+.covrignore
+.coverage
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

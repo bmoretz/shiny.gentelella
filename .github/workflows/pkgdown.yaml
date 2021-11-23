@@ -2,16 +2,15 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
       - master
-      - develop
 
-name: R-CMD-check
+name: pkgdown
 
 jobs:
-  R-CMD-check:
+  pkgdown:
+
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -20,32 +19,21 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel'}
           - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.1
 
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
 
-      - uses: r-lib/actions/setup-pandoc@v1
-
-      - name: Install System Dependencies [Windows]
-        if: |
-          startsWith(runner.os, 'Windows')
-        run: |
-          Rscript -e "install.packages(c('remotes', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE)"
-          echo "renv_dir=~\AppData\Local\renv" >> $env:GITHUB_ENV
+      - uses: r-lib/actions/setup-pandoc@master
 
       - name: Install System Dependencies [Linux]
         if: runner.os == 'Linux'
@@ -59,13 +47,7 @@ jobs:
 
           echo "renv_dir=~/.local/share/renv" >> $GITHUB_ENV
 
-      - name: Install System Dependencies [macOS]
-        if: runner.os == 'macOS'
-        shell: bash
-        run: |
-          brew install libgit2
-          Rscript -e "install.packages(c('remotes'))"
-          echo "renv_dir=~/Library/Application Support/renv" >> $GITHUB_ENV
+          Rscript -e 'remotes::install_github("jimhester/pkgdown@github-actions-deploy")'
 
       - name: Cache packages
         uses: actions/cache@v2
@@ -79,7 +61,7 @@ jobs:
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
-          renv::install("rcmdcheck")
+          renv::install("covr")
         shell: Rscript {0}
 
       - name: Session Info
@@ -90,22 +72,11 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: |
-          options(crayon.enabled = TRUE)
-          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), build_args = c("--no-build-vignettes"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
+      - name: Install package
+        run: R CMD INSTALL .
 
-      - name: Show testthat output
-        if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@master
+      - name: Deploy to GitHub pages 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+          branch: gh-pages
+          folder: docs

@@ -20,16 +20,17 @@ Encoding: UTF-8
 LazyData: true
 Depends:
     R (>= 4.0),
-    shiny (>= 1.7.1),
 Imports:
+    shiny (>= 1.7.1),
     config (>= 0.3.1),
     glue (>= 1.4.2),
     logger (>= 0.2.1),
     R6 (>= 2.5.1),
-    uuid,
+    uuid (>= 1.0.3),
     yaml (>= 2.2.1),
     crayon (>= 1.4.1),
-    stringr (>= 1.4.0)
+    stringr (>= 1.4.0),
+    DT (>= 0.20)
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/bmoretz/shiny-gentelella
 BugReports: https://github.com/bmoretz/shiny-gentelella/issues
@@ -38,17 +39,26 @@ Suggests:
     rmarkdown,
     knitr,
     covr,
-    testthat (>= 3.0.0)
+    testthat,
+    devtools,
+    badger,
+    remotes,
+    usethis,
+    here,
+    pkgdown
 Config/testthat/edition: 3
+Remotes:
+  GuangchuangYu/badger
 Language: en-US
 VignetteBuilder: knitr
 Collate: 
     'element.R'
     'control.R'
+    'page.R'
     'dashboard.R'
     'log-config.R'
     'navigation-menu.R'
-    'page.R'
     'resource-mgr.R'
+    'table.R'
     'utility.R'
     'zzz.R'
