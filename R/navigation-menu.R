@@ -188,10 +188,12 @@ NavigationMenu <- R6::R6Class(
 
         logger::log_trace("creating drop-down item: {child_item$text}")
 
-        item <- withTags(
-          li(class="sub_menu",
-            a(href=child_item$url,
-                child_item$text)
+        item <- tagList(
+          withTags(
+            li(class="sub_menu",
+              a(href=child_item$url,
+                  child_item$text)
+            )
           )
         )
 

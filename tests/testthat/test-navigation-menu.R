@@ -24,6 +24,18 @@ NavigationMenuTester <- R6::R6Class(
       private$construct()
     },
 
+    test_populate_dropdown = function(items) {
+      private$populate_dropdown(items)
+    },
+
+    test_handle_dropdown = function(menu_item) {
+      private$handle_dropdown(menu_item)
+    },
+
+    test_handle_static = function(menu_item) {
+      private$handle_static(menu_item)
+    },
+
     get_html = function() {
       private$html
     },
@@ -73,7 +85,7 @@ test_that("menu_file_parses", {
   # home menu items
   home_menu_items <- home$items
 
-  expect_equal(home_menu_items[[1]]$text, "Dashboard")
+  expect_equal(home_menu_items[[1]]$text, "Dashboard1")
   expect_equal(home_menu_items[[1]]$url, "index.html")
 
   expect_equal(home_menu_items[[2]]$text, "Dashboard2")
@@ -106,7 +118,7 @@ test_that("menu_generates", {
 
   html <- mock_menu$test_create_container(parsed)
 
-  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1704))
+  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
 })
 
 test_that("menu_constructs", {
@@ -118,5 +130,53 @@ test_that("menu_constructs", {
 
   html <- mock_menu$get_html()
 
-  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1704))
+  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
+})
+
+test_that("dropdown_menu_populates", {
+
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+  mock_menu$set_logging()
+
+  nav_file <- mock_menu$get_definition()
+  expect_true(file.exists(nav_file))
+
+  navigation <- mock_menu$test_parse_navigation(nav_file)
+
+  dropdown <- navigation[[1]]$dropdown
+
+  items <- dropdown[[1]]$items
+
+  actual <- mock_menu$test_populate_dropdown(items)
+
+  expect_equal(class(actual), 'list')
+  expect_equal(length(actual), 3)
+
+  expect_equal(actual[[1]]$name, 'li')
+  expect_equal(actual[[1]]$attribs$class, "sub_menu")
+
+  actual_link <- actual[[1]]$children[[1]]
+
+  expect_equal(actual_link$name, 'a')
+  expect_equal(actual_link$children[[1]], "Dashboard1")
+})
+
+test_that("static_menu_populates", {
+
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+  mock_menu$set_logging()
+
+  nav_file <- mock_menu$get_definition()
+  expect_true(file.exists(nav_file))
+
+  navigation <- mock_menu$test_parse_navigation(nav_file)
+
+  static_item <- navigation[[2]]$static
+
+  actual <- mock_menu$test_handle_static(static_item)
+
+  expect_equal(class(actual), 'shiny.tag')
+  expect_equal(length(actual), 3)
+
+  expect_equal(actual$attribs$class, 'sub_menu')
 })

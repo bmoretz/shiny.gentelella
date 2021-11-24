@@ -3,25 +3,25 @@
 \docType{class}
 \name{Element}
 \alias{Element}
-\title{Element}
+\title{Element
+
+R6 Class representing a UI Element}
 \value{
 top-level class name
 
 element's uuid
 }
 \description{
-This is the abstract base class for \link{Control} and \link{Page}.
-\link{NavigationMenu} inherit from \link{Dashboard}.
-
+This is the abstract base class for all UI
+elements.
+}
+\details{
 An object that is meant to be the base type for
 all user-interface elements. The primary driver
 for having a base type for all UI elements is
 that every ui should have a unique id for
 shiny module dispatch, and basic descriptors
 that assist with robust logging.
-}
-\details{
-An Element is the base object for all UI objects.
 }
 \concept{Controls}
 \section{Methods}{

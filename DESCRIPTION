@@ -56,6 +56,8 @@ Collate:
     'control.R'
     'page.R'
     'dashboard.R'
+    'errors.R'
+    'layouts.R'
     'log-config.R'
     'navigation-menu.R'
     'resource-mgr.R'

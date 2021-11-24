@@ -1,3 +1,4 @@
+library(shiny)
 library(shiny.gentelella)
 
 source(here::here("inst", "example", "example-dashboard.R"))
@@ -12,4 +13,4 @@ resource_mgr$map_path("images", "theme/images")
 app <- shinyApp(ui = example$ui(),
                 server = example$server)
 
-runApp(app, port = 8080)
+runApp(app, port = 8081)

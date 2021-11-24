@@ -12,7 +12,7 @@ Generates a dashboard navigation menu from a yaml
 definition file.
 }
 \section{Super classes}{
-\code{\link[shiny.gentelella:NA]{shiny.gentelella::NA}} -> \code{\link[shiny.gentelella:Control]{shiny.gentelella::Control}} -> \code{NavigationMenu}
+\code{\link[shiny.gentelella:Element]{shiny.gentelella::Element}} -> \code{\link[shiny.gentelella:Control]{shiny.gentelella::Control}} -> \code{NavigationMenu}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -25,8 +25,8 @@ definition file.
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="shiny.gentelella" data-topic="NA" data-id="class_name">}\href{../../shiny.gentelella/html/NA.html#method-class_name}{\code{shiny.gentelella::NA$class_name()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="shiny.gentelella" data-topic="NA" data-id="identifier">}\href{../../shiny.gentelella/html/NA.html#method-identifier}{\code{shiny.gentelella::NA$identifier()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="shiny.gentelella" data-topic="Element" data-id="class_name">}\href{../../shiny.gentelella/html/Element.html#method-class_name}{\code{shiny.gentelella::Element$class_name()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="shiny.gentelella" data-topic="Element" data-id="identifier">}\href{../../shiny.gentelella/html/Element.html#method-identifier}{\code{shiny.gentelella::Element$identifier()}}\out{</span>}
 }
 \out{</details>}
 }
