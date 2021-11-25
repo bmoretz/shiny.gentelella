@@ -58,125 +58,136 @@ nav_definition <- system.file("test-data",
 
 test_that("menu_file_parses", {
 
-  mock_menu <- NavigationMenuTester$new(nav_definition)
-  mock_menu$set_logging()
+  discard <- capture.output({
 
-  nav_file <- mock_menu$get_definition()
-  expect_true(file.exists(nav_file))
+    mock_menu <- NavigationMenuTester$new(nav_definition)
 
-  navigation <- mock_menu$test_parse_navigation(nav_file)
+    nav_file <- mock_menu$get_definition()
+    expect_true(file.exists(nav_file))
 
-  expect_equal(class(navigation), 'list')
-  expect_equal(length(navigation), 2)
+    navigation <- mock_menu$test_parse_navigation(nav_file)
 
-  # menu sections
-  general <- navigation[[1]]
+    expect_equal(class(navigation), 'list')
+    expect_equal(length(navigation), 2)
 
-  expect_equal(general$title, "General")
+    # menu sections
+    general <- navigation[[1]]
 
-  # home drop-down
-  home <- general$dropdown[[1]]
+    expect_equal(general$title, "General")
 
-  expect_equal(length(home), 3)
+    # home drop-down
+    home <- general$dropdown[[1]]
 
-  expect_equal(home$text, "Home")
-  expect_equal(home$class, "fa-home")
+    expect_equal(length(home), 3)
 
-  # home menu items
-  home_menu_items <- home$items
+    expect_equal(home$text, "Home")
+    expect_equal(home$class, "fa-home")
 
-  expect_equal(home_menu_items[[1]]$text, "Dashboard1")
-  expect_equal(home_menu_items[[1]]$url, "index.html")
+    # home menu items
+    home_menu_items <- home$items
 
-  expect_equal(home_menu_items[[2]]$text, "Dashboard2")
-  expect_equal(home_menu_items[[2]]$url, "index2.html")
+    expect_equal(home_menu_items[[1]]$text, "Dashboard1")
+    expect_equal(home_menu_items[[1]]$url, "index.html")
 
-  expect_equal(home_menu_items[[3]]$text, "Dashboard3")
-  expect_equal(home_menu_items[[3]]$url, "index3.html")
+    expect_equal(home_menu_items[[2]]$text, "Dashboard2")
+    expect_equal(home_menu_items[[2]]$url, "index2.html")
 
-  live_on <- navigation[[2]]
+    expect_equal(home_menu_items[[3]]$text, "Dashboard3")
+    expect_equal(home_menu_items[[3]]$url, "index3.html")
 
-  expect_equal(live_on$title, "LIVE ON")
+    live_on <- navigation[[2]]
 
-  landing_page <- live_on$static[[1]]
+    expect_equal(live_on$title, "LIVE ON")
 
-  expect_equal(landing_page$text, "Landing Page")
-  expect_equal(landing_page$class, "fa-laptop")
+    landing_page <- live_on$static[[1]]
 
-  comming_soon <- landing_page$item[[1]]
+    expect_equal(landing_page$text, "Landing Page")
+    expect_equal(landing_page$class, "fa-laptop")
 
-  expect_equal(comming_soon$text, "Coming Soon")
-  expect_equal(comming_soon$url, "javascript:void(0)")
+    comming_soon <- landing_page$item[[1]]
+
+    expect_equal(comming_soon$text, "Coming Soon")
+    expect_equal(comming_soon$url, "javascript:void(0)")
+
+  }, type = "message")
+
 })
 
+
 test_that("menu_generates", {
+  discard <- capture.output({
 
-  mock_menu <- NavigationMenuTester$new(nav_definition)
-  mock_menu$set_logging()
+    mock_menu <- NavigationMenuTester$new(nav_definition)
 
-  parsed <- mock_menu$test_parse_navigation(nav_definition)
+    parsed <- mock_menu$test_parse_navigation(nav_definition)
 
-  html <- mock_menu$test_create_container(parsed)
+    html <- mock_menu$test_create_container(parsed)
 
-  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
+    expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
+  }, type = "message")
 })
 
 test_that("menu_constructs", {
+  discard <- capture.output({
 
-  mock_menu <- NavigationMenuTester$new(nav_definition)
-  mock_menu$set_logging()
+    mock_menu <- NavigationMenuTester$new(nav_definition)
 
-  mock_menu$test_construct()
+    mock_menu$test_construct()
 
-  html <- mock_menu$get_html()
+    html <- mock_menu$get_html()
 
-  expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
+    expect_equal(nchar(html), c(name = 3, attribs = 111, children = 1723))
+  }, type = "message")
 })
 
+
 test_that("dropdown_menu_populates", {
+  discard <- capture.output({
 
-  mock_menu <- NavigationMenuTester$new(nav_definition)
-  mock_menu$set_logging()
+    mock_menu <- NavigationMenuTester$new(nav_definition)
 
-  nav_file <- mock_menu$get_definition()
-  expect_true(file.exists(nav_file))
+    nav_file <- mock_menu$get_definition()
+    expect_true(file.exists(nav_file))
 
-  navigation <- mock_menu$test_parse_navigation(nav_file)
+    navigation <- mock_menu$test_parse_navigation(nav_file)
 
-  dropdown <- navigation[[1]]$dropdown
+    dropdown <- navigation[[1]]$dropdown
 
-  items <- dropdown[[1]]$items
+    items <- dropdown[[1]]$items
 
-  actual <- mock_menu$test_populate_dropdown(items)
+    actual <- mock_menu$test_populate_dropdown(items)
 
-  expect_equal(class(actual), 'list')
-  expect_equal(length(actual), 3)
+    expect_equal(class(actual), 'list')
+    expect_equal(length(actual), 3)
 
-  expect_equal(actual[[1]]$name, 'li')
-  expect_equal(actual[[1]]$attribs$class, "sub_menu")
+    expect_equal(actual[[1]]$name, 'li')
+    expect_equal(actual[[1]]$attribs$class, "sub_menu")
 
-  actual_link <- actual[[1]]$children[[1]]
+    actual_link <- actual[[1]]$children[[1]]
 
-  expect_equal(actual_link$name, 'a')
-  expect_equal(actual_link$children[[1]], "Dashboard1")
+    expect_equal(actual_link$name, 'a')
+    expect_equal(actual_link$children[[1]], "Dashboard1")
+
+  }, type = "message")
+
 })
 
 test_that("static_menu_populates", {
+  discard <- capture.output({
+    mock_menu <- NavigationMenuTester$new(nav_definition)
 
-  mock_menu <- NavigationMenuTester$new(nav_definition)
-  mock_menu$set_logging()
+    nav_file <- mock_menu$get_definition()
+    expect_true(file.exists(nav_file))
 
-  nav_file <- mock_menu$get_definition()
-  expect_true(file.exists(nav_file))
+    navigation <- mock_menu$test_parse_navigation(nav_file)
 
-  navigation <- mock_menu$test_parse_navigation(nav_file)
+    static_item <- navigation[[2]]$static
 
-  static_item <- navigation[[2]]$static
+    actual <- mock_menu$test_handle_static(static_item)
 
-  actual <- mock_menu$test_handle_static(static_item)
+    expect_equal(class(actual), 'shiny.tag')
+    expect_equal(length(actual), 3)
 
-  expect_equal(class(actual), 'shiny.tag')
-  expect_equal(length(actual), 3)
-
-  expect_equal(actual$attribs$class, 'sub_menu')
+    expect_equal(actual$attribs$class, 'sub_menu')
+  }, type = "message")
 })

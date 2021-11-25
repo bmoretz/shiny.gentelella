@@ -21,10 +21,13 @@ test_that("is_abstract", {
 
   expect_error({
     element <- Element$new()
-    print(class(element))
   }, class = "is_abstract_error")
 })
 
 test_that("has_correct_classname", {
   tester <- ElementTester$new()
+
+  cls_name <- tester$class_name()
+
+  expect_equal(cls_name, "ElementTester")
 })

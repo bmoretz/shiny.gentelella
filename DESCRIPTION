@@ -1,6 +1,6 @@
 Package: shiny.gentelella
 Title: A Shiny Theme based upon Gentelella Bootstrap Template
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Brandon",
        family = "Moretz",
@@ -45,7 +45,9 @@ Suggests:
     remotes,
     usethis,
     here,
-    pkgdown
+    pkgdown,
+    namedCapture,
+    rebus
 Config/testthat/edition: 3
 Remotes:
   GuangchuangYu/badger

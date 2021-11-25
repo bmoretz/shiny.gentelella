@@ -63,9 +63,10 @@ LogConfig <- R6::R6Class(
 
         with(logger::get_logger_meta_variables(log_level = level, namespace = namespace,
                                                .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
-             cat(paste0(
-               glue::glue(private$object_format()), "\n"),
-               glue::glue(private$msg_format()))
+             cat("",
+                 glue::glue(private$object_format()),
+                 glue::glue(private$msg_format()),
+                 sep = "\r\n")
         )
 
       }, generator = deparse(match.call()))
