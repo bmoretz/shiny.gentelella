@@ -15,8 +15,8 @@
 #' Controls are modularized containers for UI widgets.
 #'
 #' @docType class
-#' @export
 #' @importFrom R6 R6Class
+#' @export
 Control <- R6::R6Class(
   classname = "Control",
   inherit = Element,

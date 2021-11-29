@@ -191,3 +191,22 @@ test_that("static_menu_populates", {
     expect_equal(actual$attribs$class, 'sub_menu')
   }, type = "message")
 })
+
+test_that("resource_not_found_error", {
+
+  mock_menu <- NavigationMenuTester$new(nav_definition)
+
+  nav_file <- "made_up.nav"
+  expect_true(!file.exists(nav_file))
+
+  navigation <- mock_menu$test_parse_navigation(nav_file)
+
+  static_item <- navigation[[2]]$static
+
+  actual <- mock_menu$test_handle_static(static_item)
+
+  expect_equal(class(actual), 'shiny.tag')
+  expect_equal(length(actual), 3)
+
+  expect_equal(actual$attribs$class, 'sub_menu')
+})

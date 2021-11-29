@@ -4,12 +4,12 @@
 \alias{Table}
 \title{Table}
 \description{
+R6 Class representing a Datatable control.
+}
+\details{
 An object that is designed to encapsulate
 most of the standard plumbing in setting up
 a Datatable in the UI. The html template
-}
-\references{
-\code{\link{Page}}
 }
 \section{Super classes}{
 \code{\link[shiny.gentelella:Element]{shiny.gentelella::Element}} -> \code{\link[shiny.gentelella:Control]{shiny.gentelella::Control}} -> \code{PortalTable}

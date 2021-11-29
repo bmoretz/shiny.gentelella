@@ -65,7 +65,7 @@ ExampleDashboard <- R6::R6Class(
     server = function(input, output, session) {
 
       private$set_logging()
-      logger::log_trace("processing server events")
+      #log_trace("processing server events")
     }
   ),
   private = list()

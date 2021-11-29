@@ -1,16 +1,14 @@
-#' @title Element
-#'
-#' @include element.R
-#'
-#' R6 Class representing a UI Page.
+#' @title Page
 #'
 #' @description
+#' R6 Class representing a UI Page.
+#'
+#' @details
 #' An object that is meant to be the base type for
 #' all ui pages. Pages are meant to represent an
 #' entire page in the UI as serves as a container
 #' for controls.
 #'
-#' @references \code{\link{Element}}
 #' @export
 Page <- R6::R6Class(
   classname = "Page",

@@ -1,11 +1,19 @@
-#' Generates a dashboard navigation menu from a yaml
-#' definition file.
-#' @export
+#' @title NavigationMenu
+#'
+#' @description
+#' R6 object that represents a navigation menu conrol.
+#'
+#' @details
+#' This object is designed to generate a dashboard
+#' page navigation menu. The file/resource that
+#' is passed to the constructor should be a yml
+#' file that specifies the structure of the menu.
+#'
 #' @importFrom glue glue
 #' @importFrom yaml read_yaml
-#' @importFrom logger log_trace log_info log_debug log_warn log_error log_success
 #' @importFrom shiny NS tags tagList withTags
 #' @importFrom shiny div span h3 a
+#' @export
 NavigationMenu <- R6::R6Class(
   classname = "NavigationMenu",
   inherit = Control,
@@ -40,7 +48,7 @@ NavigationMenu <- R6::R6Class(
   private = list(
 
     menu_types = c("dropdown",
-                  "static"),
+                   "static"),
 
     html = NULL,
     nav_definition = NULL,
@@ -48,7 +56,7 @@ NavigationMenu <- R6::R6Class(
 
     construct = function() {
 
-      logger::log_trace("creating navigation menu: {private$nav_definition}")
+      self$trace("creating navigation menu: {private$nav_definition}")
       # parse the menu definition from yml
       navigation <- private$parse_navigation(private$nav_definition)
 
@@ -63,29 +71,32 @@ NavigationMenu <- R6::R6Class(
       tryCatch(
         expr = {
 
+          #log_layout(private$log_layout)
+          #log_info("loading resource: {nav_file}")
+
           if(!file.exists(nav_file))
             stop(glue::glue("unable to locate menu definition file: {nav_file}"))
 
-          logger::log_trace("parsing navigation definition: '{nav_file}'")
+          #log_trace("parsing navigation definition: '{nav_file}'")
           structure <- yaml::read_yaml(nav_file)
-          logger::log_success("parsed menu navigation file")
+          #log_success("parsed menu navigation file")
           invisible(structure$menu)
         },
         error = function(c) {
-          logger::log_error(c)
+          #log_error(c)
         },
         warning = function(c) {
-          logger::log_warn(c)
+          #log_warn(c)
         },
         message = function(c) {
-          logger::log_info(c)
+          #log_info(c)
         }
       )
     },
 
     create_container = function(menu) {
 
-      logger::log_trace("creating menu container")
+      #log_trace("creating menu container")
 
       ns <- shiny::NS(private$id)
 
@@ -107,7 +118,7 @@ NavigationMenu <- R6::R6Class(
         menu_item <- menu[[idx]]
         menu_style <- ifelse(idx==1, " active", "")
 
-        logger::log_trace("creating menu section: '{menu_item$title}'")
+        #log_trace("creating menu section: '{menu_item$title}'")
 
         section <- tagList(
           withTags(
@@ -137,15 +148,15 @@ NavigationMenu <- R6::R6Class(
     create_menu_item = function(menu_item) {
 
       nav_type <- private$get_navigation_type(menu_item)
-      logger::log_trace("creating menu item of type: {nav_type}")
+      #log_trace("creating menu item of type: {nav_type}")
 
       menu <- switch(nav_type,
-         'dropdown' = {
-           private$handle_dropdown(menu_item)
-         },
-         'static' = {
-           private$handle_static(menu_item)
-         })
+                     'dropdown' = {
+                       private$handle_dropdown(menu_item)
+                     },
+                     'static' = {
+                       private$handle_static(menu_item)
+                     })
 
       menu
     },
@@ -154,7 +165,7 @@ NavigationMenu <- R6::R6Class(
 
       submenu <- menu_item$dropdown[[1]]
 
-      logger::log_trace("creating drop-down menu: {submenu$text}")
+      #log_trace("creating drop-down menu: {submenu$text}")
 
       withTags(
         li(
@@ -169,7 +180,7 @@ NavigationMenu <- R6::R6Class(
             ),
             ul(class="nav child_menu",
                style="display: block;",
-                private$populate_dropdown(submenu$items)
+               private$populate_dropdown(submenu$items)
             )
           )
         )
@@ -180,19 +191,19 @@ NavigationMenu <- R6::R6Class(
 
       items <- tagList()
 
-      logger::log_trace("populating drop-down items")
+      #log_trace("populating drop-down items")
 
       for(idx in seq_along(dropdown_items)) {
 
         child_item <- dropdown_items[[idx]]
 
-        logger::log_trace("creating drop-down item: {child_item$text}")
+        #log_trace("creating drop-down item: {child_item$text}")
 
         item <- tagList(
           withTags(
             li(class="sub_menu",
-              a(href=child_item$url,
-                  child_item$text)
+               a(href=child_item$url,
+                 child_item$text)
             )
           )
         )
@@ -207,22 +218,22 @@ NavigationMenu <- R6::R6Class(
 
       static_item <- menu_item$static[[1]]
 
-      logger::log_trace("creating static menu: {static_item$text}")
+      #log_trace("creating static menu: {static_item$text}")
 
       submenu_item <- static_item$item[[1]]
 
       withTags(
         li(class="sub_menu",
-            a(href=submenu_item$url,
-              tagList(
-                i(class=paste("fa", static_item$class)),
-                static_item$text,
-                span(class="label label-success pull-right",
-                     submenu_item$text)
-              )
-            )
-          )
+           a(href=submenu_item$url,
+             tagList(
+               i(class=paste("fa", static_item$class)),
+               static_item$text,
+               span(class="label label-success pull-right",
+                    submenu_item$text)
+             )
+           )
         )
+      )
     }
   )
 )
