@@ -15,7 +15,7 @@ new_fmt_literal(style, literal)
 log metric layout.
 }
 \description{
-Formatted Literal
+Inserts a block of formatted literal text.
 }
 \examples{
 new_fmt_literal(red $ bold, "literal text")
@@ -25,7 +25,7 @@ new_fmt_literal(blue $ italic, "literal text")
 \seealso{
 Other Log Layout: 
 \code{\link{new_fmt_layout}()},
-\code{\link{new_fmt_metric}()},
-\code{\link{new_line}()}
+\code{\link{new_fmt_line_break}()},
+\code{\link{new_fmt_metric}()}
 }
 \concept{Log Layout}

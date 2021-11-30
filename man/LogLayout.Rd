@@ -9,14 +9,6 @@ customized log layout for class instance.
 
 log metric layout colorized by severity.
 
-log metric layout.
-
-log metric layout.
-
-log layout newline.
-
-formatted log entry.
-
 log metric layout colorized by severity.
 
 log metric layout colorized by severity.
@@ -46,10 +38,6 @@ Other Logging:
 \item \href{#method-new}{\code{LogLayout$new()}}
 \item \href{#method-generate_ui_layout}{\code{LogLayout$generate_ui_layout()}}
 \item \href{#method-format_metric_colorized_severity}{\code{LogLayout$format_metric_colorized_severity()}}
-\item \href{#method-format_metric}{\code{LogLayout$format_metric()}}
-\item \href{#method-format_literal}{\code{LogLayout$format_literal()}}
-\item \href{#method-new_line}{\code{LogLayout$new_line()}}
-\item \href{#method-format_entry}{\code{LogLayout$format_entry()}}
 \item \href{#method-colorize_by_level}{\code{LogLayout$colorize_by_level()}}
 \item \href{#method-grayscale_by_level}{\code{LogLayout$grayscale_by_level()}}
 }
@@ -110,78 +98,6 @@ on the log severity.
 \item{\code{metric}}{metric to log.}
 
 \item{\code{...}}{additional styles}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_metric"></a>}}
-\if{latex}{\out{\hypertarget{method-format_metric}{}}}
-\subsection{Method \code{format_metric()}}{
-formats a log metric.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogLayout$format_metric(..., metric, env = parent.frame())}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{format styles}
-
-\item{\code{metric}}{logging metric}
-
-\item{\code{env}}{environment for style evaluation}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_literal"></a>}}
-\if{latex}{\out{\hypertarget{method-format_literal}{}}}
-\subsection{Method \code{format_literal()}}{
-formats a log literal value.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogLayout$format_literal(..., literal, env = parent.frame())}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{format styles}
-
-\item{\code{literal}}{log value}
-
-\item{\code{env}}{environment for style evaluation}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new_line"></a>}}
-\if{latex}{\out{\hypertarget{method-new_line}{}}}
-\subsection{Method \code{new_line()}}{
-inserts a new line in the format.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogLayout$new_line()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_entry"></a>}}
-\if{latex}{\out{\hypertarget{method-format_entry}{}}}
-\subsection{Method \code{format_entry()}}{
-formats a log entry
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogLayout$format_entry(..., include_spacer = T)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{items to format}
-
-\item{\code{include_spacer}}{indicate if there should be an empty line
-preceding the entry.}
 }
 \if{html}{\out{</div>}}
 }

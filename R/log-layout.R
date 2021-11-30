@@ -50,58 +50,6 @@ LogLayout <- R6::R6Class(
     },
 
     #' @description
-    #' formats a log metric.
-    #' @param ... format styles
-    #' @param metric logging metric
-    #' @param env environment for style evaluation
-    #' @returns log metric layout.
-    format_metric = function(..., metric,
-                             env = parent.frame()) {
-      structure(
-        list(),
-        style = crayon::combine_styles(...),
-        metric = paste0('{', metric, '}'),
-        class = 'fmt_metric'
-      )
-    },
-
-    #' @description
-    #' formats a log literal value.
-    #' @param ... format styles
-    #' @param literal log value
-    #' @param env environment for style evaluation
-    #' @returns log metric layout.
-    format_literal = function(..., literal,
-                              env = parent.frame()) {
-      structure(
-        list(),
-        style = crayon::combine_styles(...),
-        value = literal,
-        class = 'fmt_literal'
-      )
-    },
-
-    #' @description
-    #' inserts a new line in the format.
-    #' @returns log layout newline.
-    new_line = function() {
-      structure(
-        list(),
-        class = 'fmt_newline'
-      )
-    },
-
-    #' @description
-    #' formats a log entry
-    #' @param ... items to format
-    #' @param include_spacer indicate if there should be an empty line
-    #' preceding the entry.
-    #' @returns formatted log entry.
-    format_entry = function(..., include_spacer = T) {
-      ifelse(include_spacer, cat("", ...), cat(...))
-    },
-
-    #' @description
     #' formats a log metric by colorizing it based
     #' on the log severity.
     #' @param level log severity.
@@ -209,8 +157,10 @@ LogLayout <- R6::R6Class(
   )
 )
 
+
 #' Format Layout
-#'
+#' @description
+#' Base type
 #' @param style [crayon] that the layout will use in log generation.
 #' @param class class name
 #'
@@ -230,6 +180,9 @@ new_fmt_layout <- function(style,
 }
 
 #' Formatted Metric
+#'
+#' @description
+#' Inserts a formatted log metric.
 #'
 #' @param style that the layout will use in log generation
 #' @param metric the metric to log.
@@ -261,6 +214,9 @@ new_fmt_metric = function(style, metric) {
 
 #' Formatted Literal
 #'
+#' @description
+#' Inserts a block of formatted literal text.
+#'
 #' @param ... format styles
 #' @param literal log value
 #'
@@ -283,12 +239,14 @@ new_fmt_literal = function(style, literal) {
 #'
 #' @description
 #' Inserts a new line in the format.
+#'
 #' @family Log Layout
 #' @returns log layout newline.
-new_line = function() {
+new_fmt_line_break = function() {
   structure(
     list(),
     class = c('fmt_newline', 'fmt_layout')
   )
 }
+
 

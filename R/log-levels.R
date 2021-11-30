@@ -18,24 +18,47 @@
 #'  \item{"TRACE"} : {The TRACE Level designates finer-grained informational events than the DEBUG}
 #' }
 #'
-#' @return new [LogLevel]
+#' @return new [log_level]
 #' @export
-LogLevel <- function(name, severity) {
+new_log_level <- function(name, severity) {
+
   if(!is.integer(severity) || severity < 0)
     stop("invalid severity level")
 
   if(!is.character(name) || nchar(name) == 0)
     stop("invalid log level")
 
-  obj <- list(Name = name,
-              Severity = severity)
+  new_level <- structure(
+    vector(),
+    name = name,
+    severity = severity,
+    class = c("log_level")
+  )
 
-  class(obj) <- append(class(obj), "LogLevel")
+  levels <- attr(new_log_level, "levels")
 
-  obj
+  if(is.null(levels)) {
+    levels <- list()
+  }
+
+  if(!(name %in% names(levels))) {
+    levels[[name]] <- new_level
+  }
+
+  attr(new_log_level, "levels") <<- levels
+
+  new_level
 }
 
-#' @title get_name
+#' Gets Defined Log Levels
+#'
+#' @return defined log levels
+#' @export
+get_log_levels <- function() {
+  attr(new_log_level, "levels")
+}
+
+#' @title Get Level Name
 #'
 #' @description gets the name of the log level.
 #'
@@ -43,11 +66,11 @@ LogLevel <- function(name, severity) {
 #'
 #' @return log level name
 #' @export
-get_name <- function(level) {
-  UseMethod("get_name", level)
+get_level_name <- function(level) {
+  UseMethod("get_level_name", level)
 }
 
-#' @title get_name
+#' @title Get Level Name
 #'
 #' @description gets the name of the log level.
 #'
@@ -55,42 +78,33 @@ get_name <- function(level) {
 #'
 #' @return log level name
 #' @export
-get_level.LogLevel <- function(level) {
-  return(level$name)
+get_level_name.log_level <- function(level) {
+  return(attr(level, 'name'))
 }
 
-#' @title get_name
+#' @title Get Level Name
 #'
-#' @description gets the name of the log level.
+#' @description gets the name of the log level though
+#' casting to a character and forwarding the call
+#' to get_level_name.
 #'
 #' @param x log level
 #' @param ... ignored
 #' @return log level name
 #' @export
-#' @method as.character LogLevel
-as.character.LogLevel <- function(x, ...) {
-  return(x$Level)
+#' @method as.character log_level
+as.character.log_level <- function(x, ...) {
+  return(get_level_name(x))
 }
 
-#' get_level
+#' @title get level severity
 #'
 #' @param level log level
 #'
-#' @return log level
+#' @return level severity
 #' @export
-get_severity <- function(level) {
-  UseMethod("get_severity", level)
-}
-
-#' Gets the severity of a log level.
-#'
-#' @param x log level
-#' @param ... ignored
-#' @return log level
-#' @export
-#' @method as.integer LogLevel
-as.integer.LogLevel <- function(x, ...) {
-  return(x$Severity)
+get_level_severity <- function(level) {
+  UseMethod("get_level_severity", level)
 }
 
 #' Gets the severity of a log level.
@@ -102,14 +116,25 @@ as.integer.LogLevel <- function(x, ...) {
 #'
 #' @examples
 #' get_severity(FATAL)
-get_severity <- function(level) {
-  return(level$Severity)
+get_level_severity <- function(level) {
+  return(attr(level, 'severity'))
 }
 
-FATAL   = LogLevel(name = "FATAL",   severity = 100L)
-ERROR   = LogLevel(name = "ERROR",   severity = 200L)
-WARN    = LogLevel(name = "WARN",    severity =  300L)
-SUCCESS = LogLevel(name = "SUCCESS", severity = 350L)
-INFO    = LogLevel(name = "INFO",    severity = 400L)
-DEBUG   = LogLevel(name = "DEBUG",   severity =  500L)
-TRACE   = LogLevel(name = "TRACE",   severity = 600L)
+#' Gets the severity of a log level.
+#'
+#' @param x log level
+#' @param ... ignored
+#' @return log level
+#' @export
+#' @method as.integer log_level
+as.integer.log_level <- function(x, ...) {
+  return(get_level_severity(x))
+}
+
+FATAL   = new_log_level(name = "FATAL",   severity = 100L)
+ERROR   = new_log_level(name = "ERROR",   severity = 200L)
+WARN    = new_log_level(name = "WARN",    severity =  300L)
+SUCCESS = new_log_level(name = "SUCCESS", severity = 350L)
+INFO    = new_log_level(name = "INFO",    severity = 400L)
+DEBUG   = new_log_level(name = "DEBUG",   severity =  500L)
+TRACE   = new_log_level(name = "TRACE",   severity = 600L)

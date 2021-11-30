@@ -15,12 +15,12 @@ new_fmt_layout(style, class = character())
 new log format
 }
 \description{
-Format Layout
+Base type
 }
 \seealso{
 Other Log Layout: 
+\code{\link{new_fmt_line_break}()},
 \code{\link{new_fmt_literal}()},
-\code{\link{new_fmt_metric}()},
-\code{\link{new_line}()}
+\code{\link{new_fmt_metric}()}
 }
 \concept{Log Layout}
