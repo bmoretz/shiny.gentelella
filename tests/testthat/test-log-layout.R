@@ -112,16 +112,7 @@ test_that("log_output_format", {
     seperators <- sapply(generated,
                          function(e) e != fmt_newline)
 
-    split(x, with(rle(x), rep(cumsum(!values), lengths)))
-
-    sapply(groups, function(g) g[g])
-  }
-
   groups <- partition(seperators)
-
-
-
-  sapply(groups,)
   format <- lapply(groups, function(size){
     vector(mode="character", length = size)
   })
