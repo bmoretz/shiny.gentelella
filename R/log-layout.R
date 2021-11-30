@@ -208,3 +208,87 @@ LogLayout <- R6::R6Class(
     }
   )
 )
+
+#' Format Layout
+#'
+#' @param style [crayon] that the layout will use in log generation.
+#' @param class class name
+#'
+#' @family Log Layout
+#' @return new log format
+#' @export
+new_fmt_layout <- function(style,
+                    class = character()) {
+
+  stopifnot(class(style) != "crayon")
+
+  structure(
+    list(),
+    style = style,
+    class = c(class, "fmt_layout")
+  )
+}
+
+#' Formatted Metric
+#'
+#' @param style that the layout will use in log generation
+#' @param metric the metric to log.
+#'
+#' @seealso [LogDispatch]
+#' @family Log Layout
+#' @return a new formatted metric
+#' @export
+#'
+#' @examples
+#' new_fmt_metric(bold & red, "sysname")
+#'
+#' new_fmt_metric(crayon::combine_styles(crayon::italic,
+#'                                       crayon::make_style("darkorange")),
+#'              "release")
+new_fmt_metric = function(style, metric) {
+  stopifnot(class(style) == "crayon")
+
+  if(!is.character(metric) || nchar(metric) == 0)
+    stop("invalid log metric specified")
+
+  structure(
+    list(),
+    style = style,
+    metric = metric,
+    class = c("fmt_metric", "fmt_layout")
+  )
+}
+
+#' Formatted Literal
+#'
+#' @param ... format styles
+#' @param literal log value
+#'
+#' @family Log Layout
+#' @returns log metric layout.
+#' @examples
+#' new_fmt_literal(red $ bold, "literal text")
+#'
+#' new_fmt_literal(blue $ italic, "literal text")
+new_fmt_literal = function(style, literal) {
+  structure(
+    list(),
+    style = style,
+    value = literal,
+    class = c('fmt_literal', 'fmt_layout')
+  )
+}
+
+#' Formatted Line Break
+#'
+#' @description
+#' Inserts a new line in the format.
+#' @family Log Layout
+#' @returns log layout newline.
+new_line = function() {
+  structure(
+    list(),
+    class = c('fmt_newline', 'fmt_layout')
+  )
+}
+

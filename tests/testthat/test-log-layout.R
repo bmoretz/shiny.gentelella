@@ -76,13 +76,22 @@ display_log_layout <- function(level, message) {
 # })
 
 test_that("log_output_format", {
+
   layout <- LogLayoutTester$new()
 
-  fmt_sysname <- layout$format_metric(bold $ red,
-                              metric = 'sysname')
+  style <- crayon::combine_styles(crayon::bold, crayon::make_style('red1'))
+  stopifnot(class(style) != "crayon")
 
-  fmt_release <- layout$format_metric(crayon::italic,
-                                      crayon::make_style("darkorange"),
+  style <- c(crayon::italic, crayon::make_style("darkorange"))
+
+  new_fmt_literal(crayon::blue $ italic, "literal text")
+
+  fmt_sysname <- new_fmt_metric(crayon::combine_styles(crayon::italic, crayon::make_style("darkorange")),
+                                "sysname")
+
+  style <- c(crayon::italic, crayon::make_style("darkorange"))
+
+  fmt_release <- new_fmt_metric(bold $ red,
                                   metric = 'release')
 
   fmt_seperator <- layout$new_line()
@@ -97,11 +106,22 @@ test_that("log_output_format", {
                     fmt_seperator,
                     fmt_str)
 
-  seperators <- sapply(generated,
-                       function(e) class(e) == "fmt_newline")
+  partition <- function(layout) {
 
-  unique(cumsum(seperators))
+    generated == typeof(fmt_newline)
+    seperators <- sapply(generated,
+                         function(e) e != fmt_newline)
 
+    split(x, with(rle(x), rep(cumsum(!values), lengths)))
+
+    sapply(groups, function(g) g[g])
+  }
+
+  groups <- partition(seperators)
+
+
+
+  sapply(groups,)
   format <- lapply(groups, function(size){
     vector(mode="character", length = size)
   })
