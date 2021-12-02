@@ -2,15 +2,20 @@
 % Please edit documentation in R/log-levels.R
 \name{new_log_level}
 \alias{new_log_level}
-\title{LogLevel}
+\title{Log Level}
 \usage{
-new_log_level(name, severity)
+new_log_level(name, severity, colorized = NULL, grayscale = NULL)
 }
 \arguments{
 \item{name}{name of the log level is the string representation.}
 
-\item{severity}{log severity is used in threshold evaluations when
-viewing a message of this type.}
+\item{severity}{log severity is used in determining if a message should get
+displayed according to the currently set evaluation threshold.}
+
+\item{colorized}{is a \link{crayon} style that will colorize the log level.}
+
+\item{grayscale}{is a \link{crayon} style that will gray scale the log message, with
+typically inverted strength, according to the severity.}
 }
 \value{
 new \link{log_level}

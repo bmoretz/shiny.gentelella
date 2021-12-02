@@ -16,6 +16,9 @@ Inserts a new line in the format.
 Other Log Layout: 
 \code{\link{new_fmt_layout}()},
 \code{\link{new_fmt_literal}()},
-\code{\link{new_fmt_metric}()}
+\code{\link{new_fmt_log_level}()},
+\code{\link{new_fmt_metric}()},
+\code{\link{new_log_layout}()},
+\code{\link{value.log_layout}()}
 }
 \concept{Log Layout}

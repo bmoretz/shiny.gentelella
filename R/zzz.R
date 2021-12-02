@@ -1,5 +1,5 @@
 #' Global Application
-App <- NULL; LogLayouts <- NULL; Logger <- NULL
+App <- NULL; Logger <- NULL
 
 #' @title Initialization
 #'
@@ -19,9 +19,6 @@ App <- NULL; LogLayouts <- NULL; Logger <- NULL
 
   assign('App', Application$new(), envir = topenv())
   lockBinding('App', env = topenv())
-
-  assign('LogLayouts', LogLayout$new(), envir = topenv())
-  lockBinding('LogLayouts', env = topenv())
 
   assign('Logger', LogDispatch$new(), envir = topenv())
   lockBinding('Logger', env = topenv())

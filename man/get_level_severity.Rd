@@ -5,22 +5,13 @@
 \title{get level severity}
 \usage{
 get_level_severity(level)
-
-get_level_severity(level)
 }
 \arguments{
 \item{level}{log level}
 }
 \value{
 level severity
-
-
 }
 \description{
 get level severity
-
-Gets the severity of a log level.
-}
-\examples{
-get_severity(FATAL)
 }

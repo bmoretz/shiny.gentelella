@@ -61,7 +61,6 @@ Collate:
     'design.R'
     'errors.R'
     'log-dispatch.R'
-    'log-layout-generator.R'
     'log-layout.R'
     'log-levels.R'
     'navigation-menu.R'

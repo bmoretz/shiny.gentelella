@@ -1,10 +1,13 @@
-#' @title LogLevel
+#' @title Log Level
 #'
 #' @description S3 object to represent a typed & predefined log level.
 #'
 #' @param name name of the log level is the string representation.
-#' @param severity log severity is used in threshold evaluations when
-#' viewing a message of this type.
+#' @param severity log severity is used in determining if a message should get
+#' displayed according to the currently set evaluation threshold.
+#' @param colorized is a [crayon] style that will colorize the log level.
+#' @param grayscale is a [crayon] style that will gray scale the log message, with
+#' typically inverted strength, according to the severity.
 #'
 #' @section Severity:
 #'
@@ -20,22 +23,26 @@
 #'
 #' @return new [log_level]
 #' @export
-new_log_level <- function(name, severity) {
+new_log_level <- function(name, severity,
+                          colorized = NULL,
+                          grayscale = NULL) {
 
   if(!is.integer(severity) || severity < 0)
-    stop("invalid severity level")
+    stop('invalid severity level')
 
   if(!is.character(name) || nchar(name) == 0)
-    stop("invalid log level")
+    stop('invalid log level')
 
   new_level <- structure(
-    vector(),
+    list(),
     name = name,
     severity = severity,
-    class = c("log_level")
+    colorized = colorized,
+    grayscale = grayscale,
+    class = c(name, 'log_level')
   )
 
-  levels <- attr(new_log_level, "levels")
+  levels <- attr(new_log_level, 'levels')
 
   if(is.null(levels)) {
     levels <- list()
@@ -45,7 +52,7 @@ new_log_level <- function(name, severity) {
     levels[[name]] <- new_level
   }
 
-  attr(new_log_level, "levels") <<- levels
+  attr(new_log_level, 'levels') <<- levels
 
   new_level
 }
@@ -54,8 +61,8 @@ new_log_level <- function(name, severity) {
 #'
 #' @return defined log levels
 #' @export
-get_log_levels <- function() {
-  attr(new_log_level, "levels")
+log_levels <- function() {
+  attr(new_log_level, 'levels')
 }
 
 #' @title Get Level Name
@@ -67,7 +74,7 @@ get_log_levels <- function() {
 #' @return log level name
 #' @export
 get_level_name <- function(level) {
-  UseMethod("get_level_name", level)
+  UseMethod('get_level_name', level)
 }
 
 #' @title Get Level Name
@@ -104,7 +111,7 @@ as.character.log_level <- function(x, ...) {
 #' @return level severity
 #' @export
 get_level_severity <- function(level) {
-  UseMethod("get_level_severity", level)
+  UseMethod('get_level_severity', level)
 }
 
 #' Gets the severity of a log level.
@@ -116,8 +123,12 @@ get_level_severity <- function(level) {
 #'
 #' @examples
 #' get_severity(FATAL)
-get_level_severity <- function(level) {
+level_severity <- function(level) {
   return(attr(level, 'severity'))
+}
+
+display <- function() {
+
 }
 
 #' Gets the severity of a log level.
@@ -131,10 +142,37 @@ as.integer.log_level <- function(x, ...) {
   return(get_level_severity(x))
 }
 
-FATAL   = new_log_level(name = "FATAL",   severity = 100L)
-ERROR   = new_log_level(name = "ERROR",   severity = 200L)
-WARN    = new_log_level(name = "WARN",    severity =  300L)
-SUCCESS = new_log_level(name = "SUCCESS", severity = 350L)
-INFO    = new_log_level(name = "INFO",    severity = 400L)
-DEBUG   = new_log_level(name = "DEBUG",   severity =  500L)
-TRACE   = new_log_level(name = "TRACE",   severity = 600L)
+TRACE   = new_log_level(name = 'TRACE',
+                        severity = 600L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('gray50')),
+                        grayscale = crayon::make_style('gray40'))
+
+INFO    = new_log_level(name = 'INFO',
+                        severity = 400L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('dodgerblue4')),
+                        grayscale = crayon::make_style('gray60'))
+
+DEBUG   = new_log_level(name = 'DEBUG',
+                        severity =  500L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('deepskyblue4')),
+                        grayscale = crayon::make_style('gray50'))
+
+WARN    = new_log_level(name = 'WARN',
+                        severity =  300L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('darkorange')),
+                        grayscale = crayon::make_style('gray80'))
+
+ERROR   = new_log_level(name = 'ERROR',
+                        severity = 200L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('red4')),
+                        grayscale = crayon::make_style('gray90'))
+
+SUCCESS = new_log_level(name = 'SUCCESS',
+                        severity = 350L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('green4')),
+                        grayscale = crayon::make_style('gray70'))
+
+FATAL   = new_log_level(name = 'FATAL',
+                        severity = 100L,
+                        colorized = crayon::combine_styles(crayon::bold, crayon::make_style('red1')),
+                        grayscale = crayon::make_style('gray100'))

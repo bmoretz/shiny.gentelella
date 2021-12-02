@@ -10,7 +10,7 @@ test_that("standard_levels_exist", {
 })
 
 test_that("can_get_log_levels", {
-  levels <- get_log_levels()
+  levels <- log_levels()
 
   expect_true(!is.null(levels))
 
@@ -19,7 +19,7 @@ test_that("can_get_log_levels", {
 })
 
 test_that("can_get_log_levels_generic", {
-  levels <- get_log_levels()
+  levels <- log_levels()
 
   expect_true(!is.null(levels))
 
@@ -28,7 +28,7 @@ test_that("can_get_log_levels_generic", {
 })
 
 test_that("can_get_log_levels", {
-  levels <- get_log_levels()
+  levels <- log_levels()
 
   expect_true(!is.null(levels))
 
@@ -49,7 +49,7 @@ test_that("can_create_log_level", {
   level <- new_log_level("TEST", 10L)
 
   expect_true(!is.null(level))
-  expect_equal(class(level), 'log_level')
+  expect_equal(class(level), c('TEST', 'log_level'))
 })
 
 test_that("get_name_works", {
@@ -71,7 +71,7 @@ test_that("cast_level_name_works", {
 test_that("get_severity_works", {
   level <- new_log_level("TEST", 10L)
 
-  actual <- get_level_severity(level)
+  actual <- level_severity(level)
 
   expect_equal(actual, 10L)
 })
@@ -84,6 +84,9 @@ test_that("cast_level_severity_works", {
   expect_equal(actual, 10L)
 })
 
-levels <- attr(new_log_level, 'levels')
+test_that('log_levels_works'{
 
-levels(new_log_level)
+  levels <- get_log_levels()
+
+})
+

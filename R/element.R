@@ -37,7 +37,6 @@ Element <- R6::R6Class(
 
       private$id <- uuid::UUIDgenerate()
       private$cls_name <- cls_name
-      private$log_layout <- LogLayouts$generate_ui_layout(self)
     },
 
     #' @description

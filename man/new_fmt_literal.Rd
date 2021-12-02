@@ -7,9 +7,9 @@
 new_fmt_literal(style, literal)
 }
 \arguments{
-\item{literal}{log value}
+\item{style}{format style (crayon)}
 
-\item{...}{format styles}
+\item{literal}{log value}
 }
 \value{
 log metric layout.
@@ -26,6 +26,9 @@ new_fmt_literal(blue $ italic, "literal text")
 Other Log Layout: 
 \code{\link{new_fmt_layout}()},
 \code{\link{new_fmt_line_break}()},
-\code{\link{new_fmt_metric}()}
+\code{\link{new_fmt_log_level}()},
+\code{\link{new_fmt_metric}()},
+\code{\link{new_log_layout}()},
+\code{\link{value.log_layout}()}
 }
 \concept{Log Layout}

@@ -33,10 +33,6 @@ System Context
 
 \seealso{
 LogLevel
-
-Other Logging: 
-\code{\link{LogLayoutGenerator}},
-\code{\link{LogLayout}}
 }
 \concept{Logging}
 \section{Super class}{

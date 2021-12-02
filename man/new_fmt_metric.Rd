@@ -18,11 +18,9 @@ a new formatted metric
 Inserts a formatted log metric.
 }
 \examples{
-new_fmt_metric(bold & red, "sysname")
+new_fmt_metric(bold $ green, "sysname")
 
-new_fmt_metric(crayon::combine_styles(crayon::italic,
-                                      crayon::make_style("darkorange")),
-             "release")
+new_fmt_metric(bold $ red, "release")
 }
 \seealso{
 \link{LogDispatch}
@@ -30,6 +28,9 @@ new_fmt_metric(crayon::combine_styles(crayon::italic,
 Other Log Layout: 
 \code{\link{new_fmt_layout}()},
 \code{\link{new_fmt_line_break}()},
-\code{\link{new_fmt_literal}()}
+\code{\link{new_fmt_literal}()},
+\code{\link{new_fmt_log_level}()},
+\code{\link{new_log_layout}()},
+\code{\link{value.log_layout}()}
 }
 \concept{Log Layout}
