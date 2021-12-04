@@ -36,4 +36,3 @@ test_that("class_name_works", {
   expect_equal(derived$class_name(), "Derived")
 })
 
-

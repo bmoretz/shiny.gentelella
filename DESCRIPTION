@@ -67,5 +67,6 @@ Collate:
     'page-layouts.R'
     'resource-mgr.R'
     'singleton.R'
+    'sys-context.R'
     'table.R'
     'zzz.R'

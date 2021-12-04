@@ -27,6 +27,7 @@ test_that("can_get_log_levels_generic", {
   expect_equal(length(levels), 7)
 })
 
+
 test_that("can_get_log_levels", {
   levels <- log_levels()
 
@@ -55,7 +56,7 @@ test_that("can_create_log_level", {
 test_that("get_name_works", {
   level <- new_log_level("TEST", 10L)
 
-  actual <- get_level_name(level)
+  actual <- level_name(level)
 
   expect_equal(actual, "TEST")
 })
@@ -83,10 +84,3 @@ test_that("cast_level_severity_works", {
 
   expect_equal(actual, 10L)
 })
-
-test_that('log_levels_works'{
-
-  levels <- get_log_levels()
-
-})
-

@@ -42,15 +42,16 @@ LogDispatch <- R6::R6Class(
     #' @return A new `LogLayout` object.
     initialize = function() {
       super$initialize()
+
+      private$system_context <- sys_context()
     },
 
     #' Log a trace level message
     #'
     #' @param msg message to log
-    #' @param format log format
     #' @return reference to self
-    trace = function(msg, format) {
-      private$dispatch(trace, msg, format)
+    trace = function(msg) {
+      private$dispatch(TRACE, msg)
     },
 
     #' Log an information level message
@@ -59,8 +60,7 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     info = function(msg) {
-      private$log_layout(levels$INFO, msg)
-      invisible(self)
+      private$dispatch(INFO, msg)
     },
 
     #' Log a debug level message
@@ -69,8 +69,7 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     debug = function(msg) {
-      private$log_layout(levels$DEBUG, msg)
-      invisible(self)
+      private$dispatch(DEBUG, msg)
     },
 
     #' Log a warn level message
@@ -79,8 +78,7 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     warn = function(msg) {
-      private$log_layout(levels$WARN, msg)
-      invisible(self)
+      private$dispatch(WARN, msg)
     },
 
     #' Log an error level message
@@ -89,8 +87,7 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     error = function(msg) {
-      private$log_layout(levels$ERROR, msg)
-      invisible(self)
+      private$dispatch(ERROR, msg)
     },
 
     #' Log a fatal level message
@@ -99,8 +96,7 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     fatal = function(msg) {
-      private$log_layout(levels$FATAL, msg)
-      invisible(self)
+      private$dispatch(FATAL, msg)
     },
 
     #' Log a success level message
@@ -109,37 +105,21 @@ LogDispatch <- R6::R6Class(
     #'
     #' @return reference to self
     succes = function(msg) {
-      private$log_layout(levels$SUCCESS, msg)
-      invisible(self)
-    }
-  ),
+      private$dispatch(SUCCESS, msg)
+    },
 
-  active = list(
-
-    #' @field system returns a lazy-loaded field to store
-    #' system level logging metrics.
-    system = function(value) {
-
-      if(missing(value)) {
-        private$system_context <- private$get_system_context()
-      }
-
+    system = function() {
       private$system_context
     }
   ),
+
+  active = list(),
 
   private = list(
 
     system_context = NULL,
 
-    get_system_context = function() {
-      sys_info <- private$get_system_info()
-      r_ver <- private$get_r_version()
-
-      invisible(c(sys_info, r_ver))
-    },
-
-    dispatch = function(level, msg, format) {
+    dispatch = function(level, msg) {
 
       structure(function(level, msg, namespace = NA_character_,
                          .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
@@ -148,7 +128,7 @@ LogDispatch <- R6::R6Class(
           unknown_severity_warning(level)
         }
 
-        with(private$get_system_context(log_level = level, namespace = namespace,
+        with(private$system_context(log_level = level, namespace = namespace,
                                         .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
              cat("",
                  glue::glue(private$object_format()),
@@ -157,14 +137,6 @@ LogDispatch <- R6::R6Class(
         )
 
       }, generator = deparse(match.call()))
-    },
-
-    get_system_info = function() {
-      lapply(Sys.info(), FUN = function(var) var)
-    },
-
-    get_r_version = function() {
-      c('r-ver' = paste0(R.Version()[c('major', 'minor')], collapse = '.'))
     },
 
     get_dispatch_context = function(log_level = NULL,
@@ -179,15 +151,8 @@ LogDispatch <- R6::R6Class(
         fn        = deparse_to_one_line(.topcall[[1]]),
         call      = deparse_to_one_line(.topcall),
 
-        time      = Sys.time(),
-        levelr    = log_level,
-        level     = attr(log_level, 'level'),
-
         pid       = Sys.getpid(),
 
-        #ns_pkg_version = tryCatch(as.character(packageVersion(namespace)), error = function(e) NA_character_),
-
-        ## stuff from Sys.info
         node       = sysinfo[['nodename']],
         arch       = sysinfo[['machine']],
         os_name    = sysinfo[['sysname']],
@@ -198,4 +163,3 @@ LogDispatch <- R6::R6Class(
     }
   )
 )
-

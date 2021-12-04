@@ -4,7 +4,7 @@
 \alias{new_log_level}
 \title{Log Level}
 \usage{
-new_log_level(name, severity, colorized = NULL, grayscale = NULL)
+new_log_level(name, severity, log_style = NULL, msg_style = NULL)
 }
 \arguments{
 \item{name}{name of the log level is the string representation.}
@@ -12,9 +12,9 @@ new_log_level(name, severity, colorized = NULL, grayscale = NULL)
 \item{severity}{log severity is used in determining if a message should get
 displayed according to the currently set evaluation threshold.}
 
-\item{colorized}{is a \link{crayon} style that will colorize the log level.}
+\item{log_style}{is a \link{crayon} style that will colorize the log level.}
 
-\item{grayscale}{is a \link{crayon} style that will gray scale the log message, with
+\item{msg_style}{is a \link{crayon} style that will gray scale the log message, with
 typically inverted strength, according to the severity.}
 }
 \value{

@@ -2,17 +2,23 @@
 % Please edit documentation in R/log-levels.R
 \name{level_severity}
 \alias{level_severity}
-\title{Gets the severity of a log level.}
+\title{get level severity}
 \usage{
+level_severity(level)
+
 level_severity(level)
 }
 \arguments{
 \item{level}{log level}
 }
 \value{
+level severity
 
+level severity
 }
 \description{
+get level severity
+
 Gets the severity of a log level.
 }
 \examples{
