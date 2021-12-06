@@ -33,9 +33,17 @@
 LogDispatch <- R6::R6Class(
   classname = "LogDispatch",
   inherit = Singleton,
+  lock_objects = F,
+  lock_class = F,
   cloneable = F,
 
   public = list(
+
+    #' @field settings log settings
+    settings = NA,
+
+    #' @field system log system context
+    system = NA,
 
     #' @description
     #' Creates a new instance of a log config.
@@ -43,73 +51,33 @@ LogDispatch <- R6::R6Class(
     initialize = function() {
       super$initialize()
 
-      private$system_context <- sys_context()
+      self$system <- sys_context()
     },
 
-    #' Log a trace level message
-    #'
-    #' @param msg message to log
-    #' @return reference to self
-    trace = function(msg) {
-      private$dispatch(TRACE, msg)
+    #' @description
+    #' Evaluates a log msg
+    #' @return reference to self to support chaining.
+    log = function(level, msg,
+                   layout = "default") {
+
+      call_context <- sys.call(-1)
+
+      evaluated <- value(layout)
+
+      private$dispatcher(level, msg, evaluated)
+
+      #invisible(self)
+      call_context
     },
 
-    #' Log an information level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    info = function(msg) {
-      private$dispatch(INFO, msg)
-    },
+    #' @description
+    #' Adds dynamic function as a short-cut to
+    #' log a message with a configured level.
+    #' @return reference to self to support chaining.
+    add_log_level = function(level) {
+      name <- level_name(level)
 
-    #' Log a debug level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    debug = function(msg) {
-      private$dispatch(DEBUG, msg)
-    },
-
-    #' Log a warn level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    warn = function(msg) {
-      private$dispatch(WARN, msg)
-    },
-
-    #' Log an error level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    error = function(msg) {
-      private$dispatch(ERROR, msg)
-    },
-
-    #' Log a fatal level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    fatal = function(msg) {
-      private$dispatch(FATAL, msg)
-    },
-
-    #' Log a success level message
-    #'
-    #' @param msg message to log
-    #'
-    #' @return reference to self
-    succes = function(msg) {
-      private$dispatch(SUCCESS, msg)
-    },
-
-    system = function() {
-      private$system_context
+      self[[name]] <- rlang::as_function(~ print(paste(.x, .y)))
     }
   ),
 
@@ -119,47 +87,20 @@ LogDispatch <- R6::R6Class(
 
     system_context = NULL,
 
-    dispatch = function(level, msg) {
+    dispatcher = structure(function(level, msg,
+                                     ...,
+                                     .logcall = sys.call(),
+                                     .topcall = sys.call(-1),
+                                     .topenv = parent.frame()) {
 
-      structure(function(level, msg, namespace = NA_character_,
-                         .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
-
-        if(!inherits(level, 'log_level')) {
-          unknown_severity_warning(level)
-        }
-
-        with(private$system_context(log_level = level, namespace = namespace,
-                                        .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
-             cat("",
-                 glue::glue(private$object_format()),
-                 glue::glue(private$msg_format()),
-                 sep = "\r\n")
-        )
-
-      }, generator = deparse(match.call()))
-    },
-
-    get_dispatch_context = function(log_level = NULL,
-                                    namespace = NA_character_,
-                                    .logcall = sys.call(),
-                                    .topcall = sys.call(-1),
-                                    .topenv = parent.frame()) {
-
-      list(
-        ns        = namespace,
-        topenv    = environmentName(topenv(.topenv)),
-        fn        = deparse_to_one_line(.topcall[[1]]),
-        call      = deparse_to_one_line(.topcall),
-
-        pid       = Sys.getpid(),
-
-        node       = sysinfo[['nodename']],
-        arch       = sysinfo[['machine']],
-        os_name    = sysinfo[['sysname']],
-        os_release = sysinfo[['release']],
-        os_version = sysinfo[['version']],
-        user       = sysinfo[['user']]
+      with(c(self$system,
+             .logcall = .logcall,
+             .topcall = sys.call(-1),
+             .topenv = parent.frame()),
+           {
+             cat(glue::glue(..., envir = .topenv))
+           }
       )
-    }
+    }, generator = quote(dispatcher))
   )
 )

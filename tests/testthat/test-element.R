@@ -1,3 +1,9 @@
+test_that("is_abstract", {
+  expect_error({
+    element <- Element$new()
+  }, class = "is_abstract_error")
+})
+
 TestElement <- R6::R6Class(
   classname = "TestElement",
   inherit = Element,
@@ -21,17 +27,10 @@ TestElement <- R6::R6Class(
   private = list()
 )
 
-test_that("is_abstract", {
-
-  expect_error({
-    element <- TestElement$new()
-  }, class = "is_abstract_error")
-})
-
 test_that("has_correct_classname", {
-  tester <- TestElement$new()
+  element <- TestElement$new()
 
-  cls_name <- tester$class_name()
+  cls_name <- element$class_name()
 
   expect_equal(cls_name, "TestElement")
 })

@@ -126,6 +126,118 @@ value.fmt_literal <- function(fmt, ...) {
   style(fmt)(attr(fmt, 'value'))
 }
 
+#' Formatted Function Call
+#'
+#' @description
+#' Placeholder for the formatted calling function in a log layout.
+#'
+#' @param style format style (crayon)
+#' @param levels levels to look back
+#'
+#' @family Log Layout
+#' @returns log function call layout.
+#' @examples
+#' new_fmt_func_call(crayon::cyan$italic, 2)
+#'
+#' new_fmt_func_call(crayon::magenta$italic, 2)
+new_fmt_func_call <- function(style, level) {
+  structure(
+    list(),
+    style = style,
+    level = level,
+    class = c('fmt_func_call', 'fmt_layout')
+  )
+}
+
+#' Gets the value of a format object.
+#'
+#' @param fmt object to extract value from.
+#' @param ... further arguments passed to or from other methods.
+#'
+#' @return object's value
+#' @export
+value.fmt_func_call <- function(fmt, ...) {
+  level <- attr(fmt, 'level')
+  call_stack <- get_call_stack()
+  deparse(call_stack[[level]])
+}
+
+#' Formatted Call Stack
+#'
+#' @description
+#' Placeholder for the formatted call stack in a log layout.
+#'
+#' @param style format style (crayon)
+#' @param level level to pull from call stack.
+#' @family Log Layout
+#' @returns log function call layout.
+#' @examples
+#' new_fmt_func_call(crayon::cyan$italic, 2)
+#'
+#' new_fmt_func_call(crayon::magenta$italic, 2)
+new_fmt_call_stack <- function(style, levels) {
+  structure(
+    list(),
+    style = style,
+    levels = levels,
+    class = c('fmt_call_stack', 'fmt_layout')
+  )
+}
+
+#' Format Call Stack
+#'
+#' @description
+#' Formats a raw call stack list.
+#'
+#' @param fmt fmt object
+#' @param ... further arguments passed to or from other methods.
+#' @family Log Layout
+#' @returns formatted call stack
+format.fmt_call_stack = function(fmt, ...) {
+  paste0(sapply(rev(result),
+                function(level) trim(deparse(level))),
+         sep = "",
+         collapse = ";")
+}
+
+#' Gets the value of a format object.
+#'
+#' @param fmt object to extract value from.
+#' @param ... further arguments passed to or from other methods.
+#'
+#' @return object's value
+#' @export
+value.fmt_call_stack <- function(fmt, ...) {
+  levels <- attr(fmt, 'level')
+  call_stack <- get_call_stack()
+  ret_value <- call_stack[levels:length(call_stack)]
+
+  style(fmt)(ret_value)
+}
+
+#' Formatted Call Stack
+#'
+#' @description
+#' Placeholder for the formatted call stack in a log layout.
+#'
+#' @param offset number of call levels to offset
+#'
+#' @family Log Layout
+#' @returns formatted call stack
+get_call_stack = function() {
+  # number of levels deep
+  n_levels <- length(sys.parents()) * -1
+  # account for call to lapply
+  frames <- seq(from = 0, to = n_levels - 1, by = -1)
+  # get all frames
+  call_stack <- lapply(frames, function(frame) sys.call(which = frame))
+  # find where get_call_stack() is invoked
+  look_back <- as.logical(match(call_stack, "get_call_stack()", nomatch = F))
+  # subset to non-utility calls
+  start <- which(look_back, arr.ind = T) + 1; end <- length(call_stack)
+  call_stack[start:end]
+}
+
 #' Formatted Timestamp
 #'
 #' @description
@@ -171,11 +283,10 @@ format.fmt_timestamp <- function(fmt, ...) {
 #' @return object's value
 #' @export
 value.fmt_timestamp <- function(fmt, ...) {
-  s <- attr(ts, 'style')
-  v <- attr(ts, 'value')
-  f <- attr(ts, 'format')
+  v <- attr(fmt, 'value')
+  f <- attr(fmt, 'format')
 
-  s(v(f))
+  style(fmt)(v(f))
 }
 
 #' Formatted Line Break
@@ -325,8 +436,37 @@ length.log_layout <- function(x, ...) {
 #' @return evaluated log layout
 #' @export
 value.log_layout = function(layout, ...) {
+
+  format <- attr(layout, 'format')
   separator <- attr(layout, 'separator')
 
-  paste0(unlist(sapply(attr(layout, 'format'),
-                       function(fmt) value(fmt))), sep = separator, collapse = '')
+  range <- 1:(length(format))
+  is_break <- sapply(format, function(fmt) 'fmt_newline' %in% class(fmt))
+  groups <- split(range, with(rle(is_break), rep(cumsum(!values), lengths)))
+  new_lines <- which(is_break, arr.ind = T)
+
+  output <- character(0)
+
+  for(group in groups) {
+
+    rng <- unlist(unname(group))
+    has_break <- as.logical(max(new_lines %in% rng))
+
+    if(has_break == T) {
+      rng <- rng[-length(rng)]
+    }
+
+    result <- paste(sapply(format[rng], function(fmt)
+      value(fmt)), sep = separator, collapse = separator)
+
+    output <- paste0(output, result)
+
+    if(has_break) {
+      output <- paste0(output,
+                       character(0),
+                       separator = "\n")
+    }
+  }
+
+  output
 }

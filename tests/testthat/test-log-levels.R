@@ -27,7 +27,6 @@ test_that("can_get_log_levels_generic", {
   expect_equal(length(levels), 7)
 })
 
-
 test_that("can_get_log_levels", {
   levels <- log_levels()
 

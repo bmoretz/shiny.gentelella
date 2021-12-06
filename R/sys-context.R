@@ -9,10 +9,15 @@ get_r_version = function() {
 sys_context <- function() {
   sys_info <- get_system_info()
   r_ver <- get_r_version()
+  func <- get_calling_function()
 
-  sys_context <- c(sys_info, r_ver)
+  sys_context <- c(sys_info, r_ver, func)
 
   class(sys_context) <- c('sys_context')
 
   sys_context
+}
+
+get_calling_function <- function() {
+  c("func" = rlang::as_function(~ paste(deparse(sys.call(.x)), collapse = ' ')))
 }

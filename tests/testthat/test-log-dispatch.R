@@ -5,6 +5,7 @@ LogDispatchTester <- R6::R6Class(
   public = list(
 
     initialize = function() {
+      super$initialize()
     },
 
     get_system_metrics = function() {
@@ -55,19 +56,93 @@ test_that("has_system_metrics", {
 test_that("log_dispatch_01", {
   log <- LogDispatchTester$new()
 
-  log$trace("test")
+  #log$trace("test")
 })
 
-# fmt_sysname <- new_fmt_metric(crayon::bold $ green, "sysname")
-# fmt_release <- new_fmt_metric(crayon::bold $ red, "release")
-# fmt_seperator <- new_fmt_line_break()
-# fmt_text1 <- new_fmt_literal(crayon::bold $ blue, "literal text")
-#
-# layout <- new_log_layout(fmt_sysname,
-#                          fmt_release,
-#                          fmt_seperator,
-#                          fmt_text1)
-#
+test_that("can_add_log_level", {
+  log <- LogDispatchTester$new()
+
+  log$trace("test")
+
+  level_name(INFO)
+
+  log$trace()
+  log$add_log_level(INFO)
+  #log$trace("test")
+})
+
+
+new_log_layout(new_fmt_log_level(),
+               new_fmt_timestamp(),
+               fmt_version,
+               new_fmt_line_break(),
+               fmt_text1,
+               fmt_text2,
+               fmt_text3,
+               new_fmt_line_break(),
+               fmt_machine,
+               fmt_nodename,
+               fmt_user,
+               new_fmt_line_break(),
+               fmt_text4,
+               fmt_text5,
+               fmt_text6,
+               sep = '-',
+               association = "default")
+
+
+paste(deparse(as.list(.logcall)[-1][[i]]), params[[i]], sep = ': ')
+
+outer <- function() {
+  inner <- function() {
+    sys.call(-1)
+  }
+
+  inner()
+}
+
+deparse_to_one_line <- function(x) {
+  gsub('\\s+(?=(?:[^\\\'"]*[\\\'"][^\\\'"]*[\\\'"])*[^\\\'"]*$)', ' ',
+       paste(deparse(x), collapse = ' '),
+       perl = TRUE)
+}
+
+?deparse
+outer()
+
+
+fmt_sysname <- new_fmt_metric(crayon::bold $ green, "sysname")
+fmt_release <- new_fmt_metric(crayon::bold $ red, "release")
+fmt_seperator <- new_fmt_line_break()
+fmt_text1 <- new_fmt_literal(crayon::blue$italic, "literal text")
+
+
+layout <- new_log_layout(
+  new_fmt_log_level(),
+  new_fmt_metric(crayon::green$bold, "sysname"),
+  new_fmt_metric(crayon::red$bold, "release"),
+  new_fmt_metric(crayon::red$bold, "func"),
+  new_fmt_line_break(),
+  new_fmt_literal(crayon::blue$italic, "literal text"),
+  new_fmt_log_msg()
+)
+
+context <- sys_context()
+
+test_log <- function() {
+  context[["fn"]] <- deparse(sys.call())
+  with(context,{
+    glue::glue("{fn}")
+  })
+}
+
+test_log()
+
+log$log(INFO, "log msg", layout)
+
+
+context[["fn"]]
+
 # expect_equal(length(layout), 4)
 #
 # evaluated <- value(layout)
@@ -95,52 +170,18 @@ test_that("log_dispatch_01", {
 #
 # dispatch(INFO, "test")
 
-dispatcher <- structure(function(level, msg,
-                                 ...,
-                                 .logcall = sys.call(),
-                                    .topcall = sys.call(-1),
-                                      .topenv = parent.frame()) {
-
-  with(c(sys_context(), .logcall = .logcall,
-                          .topcall = sys.call(-1),
-                            .topenv = parent.frame()),
-       {
-           glue::glue(..., envir = .topenv)
-    }
-  )
-}, generator = quote(dispatcher))
-
-
-fmt_sysname <- new_fmt_metric(crayon::green$bold, "sysname")
-fmt_release <- new_fmt_metric(crayon::red$bold, "release")
-fmt_seperator <- new_fmt_line_break()
-fmt_level <- new_fmt_log_level()
-fmt_text1 <- new_fmt_literal(crayon::blue$italic, "literal text")
-fmt_timestamp <- new_fmt_timestamp(crayon::silver$italic, "%x %H:%M:%S %z")
-fmt_msg <- new_fmt_log_msg()
-
-layout <- new_log_layout(fmt_sysname,
-                         fmt_release,
-                         fmt_seperator,
-                         fmt_level,
-                         fmt_timestamp,
-                         fmt_text1,
-                         fmt_msg)
-
-evaluated <- value(layout)
-
-dispatcher(TRACE, "log msg", evaluated)
-
-
-ivory <- crayon::make_style("ivory")
-bgMaroon <- crayon::make_style("maroon", bg = TRUE)
-fancy <- crayon::combine_styles(crayon::blurred, ivory)
-
-cat(
-  fancy("This will have some fancy colors"),
-  "\n",
-  ivory("This will have some fancy colors")
-)
-
-?crayon::blurred
+# dispatcher <- structure(function(level, msg,
+#                                  ...,
+#                                  .logcall = sys.call(),
+#                                     .topcall = sys.call(-1),
+#                                       .topenv = parent.frame()) {
+#
+#   with(c(sys_context(), .logcall = .logcall,
+#                           .topcall = sys.call(-1),
+#                             .topenv = parent.frame()),
+#        {
+#            glue::glue(..., envir = .topenv)
+#     }
+#   )
+# }, generator = quote(dispatcher))
 

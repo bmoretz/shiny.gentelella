@@ -9,7 +9,4 @@ TestElement <- R6::R6Class(
 
 element <- TestElement$new()
 
-levels <- Logger$levels
-
-info <- levels$INFO
 

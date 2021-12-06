@@ -19,7 +19,7 @@ test_that("literal_output_style", {
   value <- value(literal)
 
   expect_true(!is.null(value))
-  expect_equal(value, "\033[31m\033[1mliteral value\033[22m\033[39m")
+  expect_equal(value, "literal value")
 })
 
 test_that("metric_output", {
@@ -44,7 +44,7 @@ test_that("metric_output", {
   value <- value(metric)
 
   expect_true(!is.null(value))
-  expect_equal(value, "\033[31m\033[1m{sysname}\033[22m\033[39m")
+  expect_equal(value, "{sysname}")
 })
 
 test_that("newline_output", {
@@ -85,9 +85,7 @@ test_that("timestamp_output_dflt_fmt", {
   expect_equal(actual_time, evaluated_time)
 
   actual_value <- value(ts)
-  expected_value <- paste0("\033[90m\033[3m",
-                           format(Sys.time(), "%x %H:%M:%S %z"),
-                           "\033[23m\033[39m")
+  expected_value <- format(Sys.time(), "%x %H:%M:%S %z")
 
   expect_equal(actual_value, expected_value)
 })
@@ -127,30 +125,119 @@ test_that("timestamp_output_custom_fmt", {
   expect_equal(actual_time, evaluated_time)
 
   actual_value <- value(ts)
-  expected_value <- paste0("\033[90m\033[3m",
-                           format(Sys.time(), cust_format),
-                                  "\033[23m\033[39m")
+  expected_value <- format(Sys.time(), cust_format)
 
   expect_equal(actual_value, expected_value)
+})
+
+test_that("call_stack_output", {
+
+  test <- function(a, b, c) {
+    wrapper <- function(x, y, z) {
+      outer <- function(d, e, f) {
+        inner <- function(g, h, i) {
+          get_call_stack()
+        }
+
+        inner(d, e, f)
+      }
+
+      outer(x, y, z)
+    }
+    wrapper(a, b, c)
+  }
+
+  call_stack <- test(1,2,3)
+
+  level_one <- deparse(call_stack[[1]])
+  expect_equal(level_one, 'inner(d, e, f)')
+
+  level_two <- deparse(call_stack[[2]])
+  expect_equal(level_two, 'outer(x, y, z)')
+
+  level_three <- deparse(call_stack[[3]])
+  expect_equal(level_three, 'wrapper(a, b, c)')
+
+  level_four <- deparse(call_stack[[4]])
+  expect_equal(level_four, 'test(1, 2, 3)')
+})
+
+test_that("func_call_outputs", {
+
+  # get 3rd level of the call stack
+  fmt_fn <- new_fmt_func_call(crayon::magenta$bold, 3)
+
+  test <- function(a, b, c) {
+    wrapper <- function(x, y, z) {
+      outer <- function(d, e, f) {
+        inner <- function(g, h, i) {
+          value(fmt_fn)
+        }
+
+        inner(d, e, f)
+      }
+
+      outer(x, y, z)
+    }
+    wrapper(a, b, c)
+  }
+
+  actual <- test()
+  expected <- 'inner(d, e, f)'
+
+  expect_equal(actual, expected)
+})
+
+test_that("call_stack_outputs", {
+
+  # get 3rd level of the call stack
+  fmt_callstack <- new_fmt_call_stack(crayon::magenta$bold, 3)
+
+  test <- function(a, b, c) {
+    wrapper <- function(x, y, z) {
+      outer <- function(d, e, f) {
+        inner <- function(g, h, i) {
+          value(fmt_callstack)
+        }
+
+        inner(d, e, f)
+      }
+
+      outer(x, y, z)
+    }
+    wrapper(a, b, c)
+  }
+
+  actual <- format(test())
+
+  cat(actual)
+  expected <- 'inner(d, e, f)'
+
+  expect_equal(actual, expected)
 })
 
 test_that("log_output_format", {
 
   fmt_sysname <- new_fmt_metric(crayon::green$bold, "sysname")
   fmt_release <- new_fmt_metric(crayon::red$bold, "release")
-  fmt_seperator <- new_fmt_line_break()
-  fmt_text1 <- new_fmt_literal(crayon::blue$italic, "literal text")
+
+  fmt_text1 <- new_fmt_literal(crayon::blue$italic, "literal text1")
 
   layout <- new_log_layout(fmt_sysname,
-                              fmt_release,
-                              fmt_seperator,
-                              fmt_text1)
+                           fmt_release,
+                           new_fmt_line_break(),
+                           fmt_text1)
 
   expect_equal(length(layout), 4)
 
-  evaluated <- value(layout)
+  actual <- capture_output_lines({
+    cat(value(layout))
+  })
 
-  expect_equal(evaluated, "\033[1m\033[32m{sysname}\033[39m\033[22m\033[1m\033[31m{release}\033[39m\033[22m\n\033[1m\033[34mliteral text\033[39m\033[22m")
+  expected <- c("{sysname} {release}",
+                "literal text1" )
+
+  expect_equal(actual, expected)
 })
 
 test_that("loading_log_config_works", {
@@ -174,41 +261,136 @@ test_that("loading_log_config_works", {
   })
 })
 
-# these test don't actually perform test,
-# rather provide a simple way to tweak
-# the logging output visually.
+test_that("multi_line_fmt_works_1", {
 
-# display_log_layout <- function(level, message) {
-#   log_tester <- LogLayoutTester$new()
-#   layout <- log_tester$test_get_layout()
-#
-#   fn_context <- function() {
-#     layout(level, message)
-#   }
-#
-#   if(test_layouts)
-#     fn_context()
-# }
+  fmt_sysname <- new_fmt_metric(crayon::red$bold, "sysname")
+  fmt_release <- new_fmt_metric(crayon::green$bold, "release")
+  fmt_version <- new_fmt_metric(crayon::blue$bold, "version")
 
-# log_tester <- LoggingLayoutTester$new()
-#
-# log_msg <- 'log test msg'
-#
-# formatted_output <- capture_output_lines({
-#   layout <- log_tester$test_get_layout()
-#   log_layout(layout = layout)
-#   layout(info log_msg)
-# })
-#
-# lines <- stringr::str_split(formatted_output, "\n")
-#
-# expect_equal(length(lines), 3)
-#
-# context_info <- lines[[2]]
-#
-# expect_true(stringr::str_detect(context_info, log_tester$class_name()))
-# expect_true(stringr::str_detect(context_info, log_tester$identifier()))
-#
-# message_info <- lines[[3]]
-#
-# })
+  layout <- new_log_layout(fmt_sysname,
+                           fmt_release,
+                           fmt_version,
+                           new_fmt_line_break())
+
+  actual <- capture_output_lines({
+    cat(value(layout))
+  })
+
+  expected <- "{sysname} {release} {version}"
+
+  expect_equal(actual, expected)
+})
+
+test_that("multi_line_fmt_works_2", {
+
+  fmt_sysname <- new_fmt_metric(crayon::red$bold, "sysname")
+  fmt_release <- new_fmt_metric(crayon::green$bold, "release")
+  fmt_version <- new_fmt_metric(crayon::blue$bold, "version")
+
+  fmt_text1 <- new_fmt_literal(crayon::red$italic, "literal1")
+  fmt_text2 <- new_fmt_literal(crayon::green$italic, "literal2")
+  fmt_text3 <- new_fmt_literal(crayon::blue$italic, "literal3")
+
+  layout <- new_log_layout(fmt_sysname,
+                           fmt_release,
+                           fmt_version,
+                           new_fmt_line_break(),
+                           fmt_text1,
+                           fmt_text2,
+                           fmt_text3,
+                           sep = '-')
+
+  actual <- capture_output_lines({
+    cat(value(layout))
+  })
+
+  expected <- c("{sysname}-{release}-{version}",
+                "literal1-literal2-literal3")
+
+  expect_equal(actual, expected)
+})
+
+test_that("multi_line_fmt_works_3", {
+
+  fmt_sysname <- new_fmt_metric(crayon::red$bold, "sysname")
+  fmt_release <- new_fmt_metric(crayon::green$bold, "release")
+  fmt_version <- new_fmt_metric(crayon::blue$bold, "version")
+
+  fmt_text1 <- new_fmt_literal(crayon::red$italic, "literal1")
+  fmt_text2 <- new_fmt_literal(crayon::green$italic, "literal2")
+  fmt_text3 <- new_fmt_literal(crayon::blue$italic, "literal3")
+
+  fmt_machine <- new_fmt_metric(crayon::red$bold, "machine")
+  fmt_nodename <- new_fmt_metric(crayon::green$bold, "nodename")
+  fmt_user <- new_fmt_metric(crayon::blue$bold, "user")
+
+  layout <- new_log_layout(fmt_sysname,
+                           fmt_release,
+                           fmt_version,
+                           new_fmt_line_break(),
+                           fmt_text1,
+                           fmt_text2,
+                           fmt_text3,
+                           new_fmt_line_break(),
+                           fmt_machine,
+                           fmt_nodename,
+                           fmt_user,
+                           sep = '---')
+
+  actual <- capture_output_lines({
+    cat(value(layout))
+  })
+
+  expected <- c("{sysname}---{release}---{version}",
+                "literal1---literal2---literal3",
+                "{machine}---{nodename}---{user}")
+
+  expect_equal(actual, expected)
+})
+
+test_that("multi_line_fmt_works_4", {
+
+  fmt_sysname <- new_fmt_metric(crayon::red$bold, "sysname")
+  fmt_release <- new_fmt_metric(crayon::green$bold, "release")
+  fmt_version <- new_fmt_metric(crayon::blue$bold, "version")
+
+  fmt_text1 <- new_fmt_literal(crayon::red$italic, "literal1")
+  fmt_text2 <- new_fmt_literal(crayon::green$italic, "literal2")
+  fmt_text3 <- new_fmt_literal(crayon::blue$italic, "literal3")
+
+  fmt_machine <- new_fmt_metric(crayon::red$bold, "machine")
+  fmt_nodename <- new_fmt_metric(crayon::green$bold, "nodename")
+  fmt_user <- new_fmt_metric(crayon::blue$bold, "user")
+
+  fmt_text4 <- new_fmt_literal(crayon::red$italic, "literal4")
+  fmt_text5 <- new_fmt_literal(crayon::green$italic, "literal5")
+  fmt_text6 <- new_fmt_literal(crayon::blue$italic, "literal6")
+
+  layout <- new_log_layout(fmt_sysname,
+                           fmt_release,
+                           fmt_version,
+                           new_fmt_line_break(),
+                           fmt_text1,
+                           fmt_text2,
+                           fmt_text3,
+                           new_fmt_line_break(),
+                           fmt_machine,
+                           fmt_nodename,
+                           fmt_user,
+                           new_fmt_line_break(),
+                           fmt_text4,
+                           fmt_text5,
+                           fmt_text6,
+                           sep = '---')
+
+  actual <- capture_output_lines({
+    cat(value(layout))
+  })
+
+  expected <- c("{sysname}---{release}---{version}",
+                "literal1---literal2---literal3",
+                "{machine}---{nodename}---{user}",
+                "literal4---literal5---literal6")
+
+  expect_equal(actual, expected)
+})

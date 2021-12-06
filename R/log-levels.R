@@ -43,15 +43,19 @@ new_log_level <- function(name,
     class = c(name, 'log_level')
   )
 
+  levels[[name]] <<- new_level
+
   new_level
 }
+
+levels <- list()
 
 #' Gets Defined Log Levels
 #'
 #' @return defined log levels
 #' @export
 log_levels <- function() {
-  LogConfig$levels
+  levels
 }
 
 #' @title Get Level Name
@@ -165,37 +169,4 @@ format.log_level <- function(level, msg) {
 #' @export
 level_info <- function(level) {
   attr(level, 'log_style')(level_name(level))
-}
-
-#' Load Log Levels
-#'
-#' @param file_name loads logging levels from a yml configuration file.
-#'
-#' @return initialized log levels from the specified config.
-#' @export
-#'
-#' @examples
-#'
-load_log_configuration <- function(file_name) {
-
-  log_config <- yaml::read_yaml(file_name, eval.expr = T)
-
-  config <- list()
-  log_levels <- list()
-
-  for(layout in log_config$levels) {
-
-    new_level <- new_log_layout(name = layout$name,
-                                severity = layout$severity,
-                                log_style = layout$log_style,
-                                msg_style = layout$msg_style)
-
-    log_levels[[layout$name]] <- new_level
-
-  }
-
-  config[["settings"]] <- log_config$settings
-  config[["levels"]] <- log_levels
-
-  config
 }
