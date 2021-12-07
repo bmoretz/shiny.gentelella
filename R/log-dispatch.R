@@ -60,14 +60,11 @@ LogDispatch <- R6::R6Class(
     log = function(level, msg,
                    layout = "default") {
 
-      call_context <- sys.call(-1)
-
       evaluated <- value(layout)
 
       private$dispatcher(level, msg, evaluated)
 
-      #invisible(self)
-      call_context
+      invisible(self)
     },
 
     #' @description
@@ -88,14 +85,22 @@ LogDispatch <- R6::R6Class(
     system_context = NULL,
 
     dispatcher = structure(function(level, msg,
-                                     ...,
-                                     .logcall = sys.call(),
-                                     .topcall = sys.call(-1),
-                                     .topenv = parent.frame()) {
+                                    ...,
+                                    cs_offset = 2,
+                                    .topenv = parent.frame()) {
 
-      with(c(self$system,
-             .logcall = .logcall,
-             .topcall = sys.call(-1),
+      cs <- get_call_stack()
+
+      # remove the framework calls from cs
+      call_stack <- head(cs, length(cs) - cs_offset)
+      top_call <- call_stack[1]
+
+      # formatted call stack
+      call_stack <- paste0(call_stack,
+                             sep = "",
+                             collapse = ";")
+
+      with(c(self$system, call_stack,
              .topenv = parent.frame()),
            {
              cat(glue::glue(..., envir = .topenv))

@@ -90,98 +90,29 @@ new_log_layout(new_fmt_log_level(),
                sep = '-',
                association = "default")
 
-
-paste(deparse(as.list(.logcall)[-1][[i]]), params[[i]], sep = ': ')
-
-outer <- function() {
-  inner <- function() {
-    sys.call(-1)
-  }
-
-  inner()
-}
-
-deparse_to_one_line <- function(x) {
-  gsub('\\s+(?=(?:[^\\\'"]*[\\\'"][^\\\'"]*[\\\'"])*[^\\\'"]*$)', ' ',
-       paste(deparse(x), collapse = ' '),
-       perl = TRUE)
-}
-
-?deparse
-outer()
-
-
-fmt_sysname <- new_fmt_metric(crayon::bold $ green, "sysname")
-fmt_release <- new_fmt_metric(crayon::bold $ red, "release")
-fmt_seperator <- new_fmt_line_break()
-fmt_text1 <- new_fmt_literal(crayon::blue$italic, "literal text")
-
-
 layout <- new_log_layout(
-  new_fmt_log_level(),
   new_fmt_metric(crayon::green$bold, "sysname"),
-  new_fmt_metric(crayon::red$bold, "release"),
-  new_fmt_metric(crayon::red$bold, "func"),
+  new_fmt_metric(crayon::yellow$bold, "release"),
   new_fmt_line_break(),
+  new_fmt_log_level(),
+  new_fmt_timestamp(crayon::silver$italic),
+  new_fmt_metric(crayon::magenta$bold, "top_call"),
   new_fmt_literal(crayon::blue$italic, "literal text"),
-  new_fmt_log_msg()
+  new_fmt_log_msg(),
+  new_fmt_line_break(),
+  new_fmt_metric(crayon::cyan$bold, "call_stack")
 )
 
-context <- sys_context()
+test <- function() {
+  outer <- function() {
+    inner <- function() {
+      Logger$log(ERROR, "log msg", layout = layout)
+    }
 
-test_log <- function() {
-  context[["fn"]] <- deparse(sys.call())
-  with(context,{
-    glue::glue("{fn}")
-  })
+    inner()
+  }
+
+  outer()
 }
 
-test_log()
-
-log$log(INFO, "log msg", layout)
-
-
-context[["fn"]]
-
-# expect_equal(length(layout), 4)
-#
-# evaluated <- value(layout)
-#
-# level <- INFO
-#
-# dispatcher <- function(level, msg) {
-#
-#   system_context <- sys_context()
-#
-#   structure(function(level, msg, namespace = NA_character_,
-#                      .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
-#
-#     if(!inherits(level, 'log_level')) {
-#       unknown_severity_warning(level)
-#     }
-#
-#     with(system_context(log_level = level, namespace = namespace,
-#                                 .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
-#       glue::glue(evaluated, envir = .topenv)
-#     )
-#
-#   }, generator = deparse(match.call()))
-# }
-#
-# dispatch(INFO, "test")
-
-# dispatcher <- structure(function(level, msg,
-#                                  ...,
-#                                  .logcall = sys.call(),
-#                                     .topcall = sys.call(-1),
-#                                       .topenv = parent.frame()) {
-#
-#   with(c(sys_context(), .logcall = .logcall,
-#                           .topcall = sys.call(-1),
-#                             .topenv = parent.frame()),
-#        {
-#            glue::glue(..., envir = .topenv)
-#     }
-#   )
-# }, generator = quote(dispatcher))
-
+test()
