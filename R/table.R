@@ -1,18 +1,15 @@
 #' @title Table
 #'
-#' @include control.R
-#'
+#' @description
 #' R6 Class representing a Datatable control.
 #'
-#' @description
+#' @details
 #' An object that is designed to encapsulate
 #' most of the standard plumbing in setting up
 #' a Datatable in the UI. The html template
 #'
-#'
-#' @references \code{\link{Page}}
-#' @export
 #' @importFrom DT dataTableOutput
+#' @export
 Table <- R6::R6Class(
   classname = "PortalTable",
   inherit = Control,

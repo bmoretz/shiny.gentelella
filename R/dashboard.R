@@ -11,8 +11,8 @@
 #' content section.
 #'
 #' @references \code{\link{Page}}
-#' @export
 #' @importFrom shiny htmlTemplate tagList
+#' @export
 Dashboard <- R6::R6Class(
   inherit = Page,
   public = list(

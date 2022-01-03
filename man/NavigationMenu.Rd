@@ -2,14 +2,15 @@
 % Please edit documentation in R/navigation-menu.R
 \name{NavigationMenu}
 \alias{NavigationMenu}
-\title{Generates a dashboard navigation menu from a yaml
-definition file.}
+\title{NavigationMenu}
 \description{
-Generates a dashboard navigation menu from a yaml
-definition file.
-
-Generates a dashboard navigation menu from a yaml
-definition file.
+R6 object that represents a navigation menu conrol.
+}
+\details{
+This object is designed to generate a dashboard
+page navigation menu. The file/resource that
+is passed to the constructor should be a yml
+file that specifies the structure of the menu.
 }
 \section{Super classes}{
 \code{\link[shiny.gentelella:Element]{shiny.gentelella::Element}} -> \code{\link[shiny.gentelella:Control]{shiny.gentelella::Control}} -> \code{NavigationMenu}

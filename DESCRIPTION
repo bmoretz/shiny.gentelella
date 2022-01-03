@@ -24,13 +24,13 @@ Imports:
     shiny (>= 1.7.1),
     config (>= 0.3.1),
     glue (>= 1.4.2),
-    logger (>= 0.2.1),
     R6 (>= 2.5.1),
     uuid (>= 1.0.3),
     yaml (>= 2.2.1),
     crayon (>= 1.4.1),
     stringr (>= 1.4.0),
-    DT (>= 0.20)
+    DT (>= 0.20),
+    thematic (>= 0.1.2.1)
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/bmoretz/shiny-gentelella
 BugReports: https://github.com/bmoretz/shiny-gentelella/issues
@@ -46,23 +46,23 @@ Suggests:
     usethis,
     here,
     pkgdown,
-    namedCapture,
-    rebus
+    prettydoc
 Config/testthat/edition: 3
 Remotes:
   GuangchuangYu/badger
 Language: en-US
 VignetteBuilder: knitr
 Collate: 
+    'application.R'
     'element.R'
     'control.R'
     'page.R'
     'dashboard.R'
+    'design.R'
     'errors.R'
-    'layouts.R'
-    'log-config.R'
     'navigation-menu.R'
+    'page-layouts.R'
     'resource-mgr.R'
+    'singleton.R'
     'table.R'
-    'utility.R'
     'zzz.R'

@@ -1,5 +1,11 @@
-ElementTester <- R6::R6Class(
-  classname = "ElementTester",
+test_that("is_abstract", {
+  expect_error({
+    element <- Element$new()
+  }, class = "is_abstract_error")
+})
+
+TestElement <- R6::R6Class(
+  classname = "TestElement",
   inherit = Element,
 
   public = list(
@@ -8,8 +14,12 @@ ElementTester <- R6::R6Class(
       super$initialize()
     },
 
-    test_get_classname = function() {
+    get_log_layout = function() {
+      private$log_layout
+    },
 
+    test_get_classname = function() {
+      private$cls_name
     }
 
   ),
@@ -17,17 +27,35 @@ ElementTester <- R6::R6Class(
   private = list()
 )
 
-test_that("is_abstract", {
+test_that("has_correct_classname", {
+  element <- TestElement$new()
 
-  expect_error({
-    element <- Element$new()
-  }, class = "is_abstract_error")
+  cls_name <- element$class_name()
+
+  expect_equal(cls_name, "TestElement")
 })
 
-test_that("has_correct_classname", {
-  tester <- ElementTester$new()
+test_that("element_log_layout", {
+  tester <- TestElement$new()
 
-  cls_name <- tester$class_name()
+  # layout <- tester$get_log_layout()
+  # fn_context <- function() {
+  #   tester$trace("test: {test_var}")
+  # }
+  #
+  # fn_context()
 
-  expect_equal(cls_name, "ElementTester")
+  # expect_equal(cls_name, "TestElement")
+})
+
+test_that("can_log_trace", {
+  # tester <- TestElement$new()
+  #
+  # tester$trace("test")
+  #
+  # expect_equal(cls_name, "TestElement")
+})
+
+test_that('element_logs_formatted', {
+
 })

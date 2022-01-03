@@ -14,3 +14,4 @@ app <- shinyApp(ui = example$ui(),
                 server = example$server)
 
 runApp(app, port = 8081)
+

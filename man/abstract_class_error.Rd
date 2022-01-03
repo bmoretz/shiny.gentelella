@@ -21,20 +21,24 @@ Abstract Class Error
 }
 \examples{
 
-\dontrun{
 ABC <- R6::R6Class(
+  classname = "ABC",
   public = list(
-    classname = "ABC",
-
     initialize = function() {
 
-      cls_name <- get_classname()
+      cls_name <- get_class_name()
 
       if(cls_name == "ABC")
         abstract_class_error(cls_name, call = "initialize")
-
-     ...continue initialize
-    },
+    }
+  )
 )
-}
+
+result <- tryCatch(expr = {
+  ABC$new()
+},
+error = function(e) {
+ message(e)
+ NULL
+})
 }

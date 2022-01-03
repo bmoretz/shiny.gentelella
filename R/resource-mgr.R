@@ -1,12 +1,14 @@
-#' R6 Class for Managing Resources
+#' @title Resource Manager
 #'
 #' @description
-#' An object that is used as a singleton instance
-#' to manage resources and map paths in the
-#' shiny application.
+#' R6 class that encapsulates common resource management
+#' operations.
 #'
 #' @details
-#' Resource manager that has a single instance
+#' R6 class that is designed to be a singleton (there
+#' is only a single instance globally) to provide
+#' a clean wrapper over common resource management
+#' tasks.
 #'
 #' @export
 ResourceMgr <- R6::R6Class(
@@ -31,10 +33,10 @@ ResourceMgr <- R6::R6Class(
       n_files <- length(list.files(path = mapped_path))
 
       if(n_files == 0 & warn_empty) {
-        logger::log_warn("No resources to add from resource path '{directory}' because it's empty.")
+        #log_warn("No resources to add from resource path '{directory}' because it's empty.")
       } else {
         addResourcePath(prefix, mapped_path)
-        logger::log_trace("added resource path: '{directory}' as '{prefix}', {n_files} total resources.")
+        #log_trace("added resource path: '{directory}' as '{prefix}', {n_files} total resources.")
       }
     },
 
@@ -51,5 +53,3 @@ ResourceMgr <- R6::R6Class(
   ),
   private = list()
 )
-
-resource_mgr <- ResourceMgr$new()

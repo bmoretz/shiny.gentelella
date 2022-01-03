@@ -2,15 +2,15 @@
 % Please edit documentation in R/page.R
 \name{Page}
 \alias{Page}
-\title{Element}
+\title{Page}
 \description{
+R6 Class representing a UI Page.
+}
+\details{
 An object that is meant to be the base type for
 all ui pages. Pages are meant to represent an
 entire page in the UI as serves as a container
 for controls.
-}
-\references{
-\code{\link{Element}}
 }
 \section{Super class}{
 \code{\link[shiny.gentelella:Element]{shiny.gentelella::Element}} -> \code{Page}

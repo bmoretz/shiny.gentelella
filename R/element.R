@@ -17,27 +17,25 @@
 #'
 #' @docType class
 #' @family Controls
-#' @export
 #' @importFrom uuid UUIDgenerate
 #' @importFrom R6 R6Class
 #' @importFrom stringr str_detect str_remove
-#' @importFrom logger log_layout
+#' @export
 Element <- R6::R6Class(
   classname = "Element",
   public = list(
 
     #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #' Creates a new instance class.
     #' @return A new `Element` object.
     initialize = function() {
 
-      cls_name <- private$get_classname()
+      cls_name <- get_class_name()
 
       if(cls_name == "Element")
         abstract_class_error(cls_name, call = "initialize")
 
       private$id <- uuid::UUIDgenerate()
-      private$log_config <- LogConfig$new()
       private$cls_name <- cls_name
     },
 
@@ -54,25 +52,20 @@ Element <- R6::R6Class(
     identifier = function() {
       private$id
     }
-
   ),
+
+  active = list(),
+
   private = list(
 
     id = NULL,
     cls_name = NULL,
-    log_config = NULL,
+    log_layout = NULL,
 
     set_logging = function() {
-      cls_layout <- private$log_config$generate_layout(self)
-      logger::log_layout(cls_layout)
+      cls_layout <- LogLayouts$generate_ui_layout(self)
+      #log_layout(cls_layout)
       invisible(self)
-    },
-
-    get_classname = function() {
-      calls <- as.character(sys.calls())
-      calls <- calls[max(which(stringr::str_detect(calls, "\\$new\\(.*\\)")))]
-      stopifnot(length(calls) == 1)
-      invisible(stringr::str_remove(calls, "\\$new\\(.*\\)"))
     }
   )
 )

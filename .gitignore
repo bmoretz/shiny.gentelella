@@ -5,3 +5,4 @@
 .coverage
 check/
 docs
+inst/doc

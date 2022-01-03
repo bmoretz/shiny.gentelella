@@ -2,17 +2,19 @@
 % Please edit documentation in R/resource-mgr.R
 \name{ResourceMgr}
 \alias{ResourceMgr}
-\title{R6 Class for Managing Resources}
+\title{Resource Manager}
 \value{
 fully qualified file system path
 }
 \description{
-An object that is used as a singleton instance
-to manage resources and map paths in the
-shiny application.
+R6 class that encapsulates common resource management
+operations.
 }
 \details{
-Resource manager that has a single instance
+R6 class that is designed to be a singleton (there
+is only a single instance globally) to provide
+a clean wrapper over common resource management
+tasks.
 }
 \section{Methods}{
 \subsection{Public methods}{
