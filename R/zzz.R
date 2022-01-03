@@ -1,5 +1,5 @@
 #' Global Application
-App <- NULL; Logger <- NULL
+App <- NULL;
 
 #' @title Initialization
 #'
@@ -19,15 +19,6 @@ App <- NULL; Logger <- NULL
 
   assign('App', Application$new(), envir = topenv())
   lockBinding('App', env = topenv())
-
-  log_config_file <- system.file("logging.yml",
-                                 package = "shiny.gentelella")
-
-  load_log_configuration(log_config_file, envir = topenv())
-
-  # trace <- rlang::as_function(~ print(paste(TRACE, .x)))
-  #
-  # LogDispatch$set("public", "trace", trace)
 
   assign('Logger', LogDispatch$new(), envir = topenv())
   lockBinding('Logger', env = topenv())

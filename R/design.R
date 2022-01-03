@@ -6,8 +6,8 @@
 #'
 #' @details
 #' This function determines the type of the instantiated
-#' object at run-time, which has a tremdious amount of
-#' utility, especially objets with deeply nested inheritance.
+#' object at run-time, which has a tremendous amount of
+#' utility, especially objects with deeply nested inheritance.
 #' Must be called within the object's constructor ([initialize]).
 #'
 #' @return run-time class name
