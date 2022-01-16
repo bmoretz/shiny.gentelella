@@ -1,5 +1,9 @@
+#' @title Navigation Menu
+#'
+#' @description
 #' Generates a dashboard navigation menu from a yaml
 #' definition file.
+#'
 #' @export
 #' @importFrom glue glue
 #' @importFrom yaml read_yaml
@@ -48,7 +52,7 @@ NavigationMenu <- R6::R6Class(
 
     construct = function() {
 
-      logger::log_trace("creating navigation menu: {private$nav_definition}")
+      Logger$trace("creating navigation menu: {private$nav_definition}")
       # parse the menu definition from yml
       navigation <- private$parse_navigation(private$nav_definition)
 

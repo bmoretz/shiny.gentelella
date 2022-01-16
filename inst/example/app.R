@@ -5,6 +5,7 @@ source(here::here("inst", "example", "example-dashboard.R"))
 
 example <- ExampleDashboard$new()
 
+resource_mgr <- ResourceMgr$new()
 resource_mgr$map_path("assets", "theme/assets")
 resource_mgr$map_path("scripts", "theme/scripts")
 resource_mgr$map_path("images", "theme/images")

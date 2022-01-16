@@ -2,12 +2,8 @@
 % Please edit documentation in R/navigation-menu.R
 \name{NavigationMenu}
 \alias{NavigationMenu}
-\title{Generates a dashboard navigation menu from a yaml
-definition file.}
+\title{Navigation Menu}
 \description{
-Generates a dashboard navigation menu from a yaml
-definition file.
-
 Generates a dashboard navigation menu from a yaml
 definition file.
 }

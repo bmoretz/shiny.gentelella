@@ -30,11 +30,11 @@ ResourceMgr <- R6::R6Class(
 
       n_files <- length(list.files(path = mapped_path))
 
-      if(n_files == 0 & warn_empty) {
-        logger::log_warn("No resources to add from resource path '{directory}' because it's empty.")
+      if (n_files == 0 & warn_empty) {
+        Logger$trace("No resources to add from resource path '{directory}' because it's empty.")
       } else {
         addResourcePath(prefix, mapped_path)
-        logger::log_trace("added resource path: '{directory}' as '{prefix}', {n_files} total resources.")
+        Logger$trace("added resource path: '{directory}' as '{prefix}', {n_files} total resources.")
       }
     },
 
