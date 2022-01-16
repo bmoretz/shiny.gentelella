@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,25 +33,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shiny.gentelella</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/bmoretz/shiny-gentelella/">
+  <a href="https://github.com/bmoretz/shiny-gentelella/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -66,37 +62,37 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="shinygentelella" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#shinygentelella" class="anchor"></a>shiny.gentelella</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="shinygentelella">shiny.gentelella<a class="anchor" aria-label="anchor" href="#shinygentelella"></a>
+</h1></div>
 <!-- badges: start -->
 
-<p>The goal of shiny.gentelella is to provide a simple, object-oriented application framework styled using the open-source bootstrap4 theme, <a href="https://github.com/ColorlibHQ/gentelella">gentelella</a>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p>The goal of shiny.gentelella is to provide a simple, object-oriented application framework styled using the open-source bootstrap4 theme, <a href="https://github.com/ColorlibHQ/gentelella" class="external-link">gentelella</a>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>You can install the development version of shiny.gentelella like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"bmoretz/shiny.gentelella"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"bmoretz/shiny.gentelella"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>This is a simple example that shows you how to setup a single page dashboard:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bmoretz/shiny-gentelella">shiny.gentelella</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bmoretz/shiny-gentelella" class="external-link">shiny.gentelella</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: shiny</span>
 
-<span class="va">ExampleDashboard</span> <span class="op">&lt;-</span> <span class="fu">R6</span><span class="fu">::</span><span class="kw"><a href="https://r6.r-lib.org/reference/R6Class.html">R6Class</a></span><span class="op">(</span>
+<span class="va">ExampleDashboard</span> <span class="op">&lt;-</span> <span class="fu">R6</span><span class="fu">::</span><span class="kw"><a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6Class</a></span><span class="op">(</span>
   classname <span class="op">=</span> <span class="st">"ExampleDashboard"</span>,
   inherit <span class="op">=</span> <span class="va">Dashboard</span>,
-  public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
 
     <span class="co">#' @field meta page attributes</span>
     <span class="co">#' and configuration wrapper.</span>
-    meta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    meta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
       title <span class="op">=</span> <span class="st">"Example Dashbaord"</span>,
-      nav_definition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"example"</span>,
+      nav_definition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example"</span>,
                                    <span class="st">"navigation.yml"</span>,
                                    package <span class="op">=</span> <span class="st">"shiny.gentelella"</span><span class="op">)</span>
     <span class="op">)</span>,
@@ -120,10 +116,10 @@
     server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
 
       <span class="va">private</span><span class="op">$</span><span class="fu">set_logging</span><span class="op">(</span><span class="op">)</span>
-      <span class="fu">logger</span><span class="fu">::</span><span class="fu"><a href="https://daroczig.github.io/logger/reference/log_level.html">log_trace</a></span><span class="op">(</span><span class="st">"processing server events"</span><span class="op">)</span>
+      <span class="fu">logger</span><span class="fu">::</span><span class="fu"><a href="https://daroczig.github.io/logger/reference/log_level.html" class="external-link">log_trace</a></span><span class="op">(</span><span class="st">"processing server events"</span><span class="op">)</span>
     <span class="op">}</span>
   <span class="op">)</span>,
-  private <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+  private <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="va">example</span> <span class="op">&lt;-</span> <span class="va">ExampleDashboard</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
@@ -133,54 +129,67 @@
                 server <span class="op">=</span> <span class="va">example</span><span class="op">$</span><span class="va">server</span><span class="op">)</span>
 
 <span class="co"># runApp(app, port = 8080)</span></code></pre></div>
-<p><img src="inst/resources/screenshot.jfif" alt="alt text here"></p>
+<div class="figure">
+<img src="inst/resources/screenshot.jfif" alt=""><p class="caption">alt text here</p>
+</div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/bmoretz/shiny-gentelella/">https://​github.com/​bmoretz/​shiny-gentelella/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/bmoretz/shiny-gentelella/issues">https://​github.com/​bmoretz/​shiny-gentelella/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Brandon Moretz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8832-5173" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://github.com/bmoretz/shiny-gentelella/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/bmoretz/shiny-gentelella/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/bmoretz/shiny.gentelella/actions"><img src="https://github.com/bmoretz/shiny.gentelella/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://codecov.io/gh/bmoretz/shiny.gentelella"><img src="https://codecov.io/gh/bmoretz/shiny.gentelella/branch/master/graph/badge.svg?token=U3G6QWCNOI" alt="codecov"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing shiny.gentelella</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Brandon Moretz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8832-5173" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/bmoretz/shiny.gentelella/actions" class="external-link"><img src="https://github.com/bmoretz/shiny.gentelella/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://codecov.io/gh/bmoretz/shiny.gentelella" class="external-link"><img src="https://codecov.io/gh/bmoretz/shiny.gentelella/branch/master/graph/badge.svg?token=U3G6QWCNOI" alt="codecov"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Brandon Moretz.</p>
+  <p></p>
+<p>Developed by Brandon Moretz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -188,6 +197,8 @@
 
   
 
+
+  
 
   </body>
 </html>
